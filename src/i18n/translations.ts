@@ -160,10 +160,10 @@ export const translations = {
 
     // Stats / Analytics Tab
     dailyScoreTitle: '今日精力与交付指数',
-    weeklyStandupTitle: '导师周报 / 团队 Standup 同步',
-    weeklyStandupSub: '一键提取本周已交付成果、产出工时与精力连续性',
-    copyWeeklyReportBtn: '复制周报',
-    weeklyReportSuccess: '📋 已复制本周科研/工作周报至剪贴板',
+    weeklyStandupTitle: '本周个人精力复盘',
+    weeklyStandupSub: '一键提炼本周核心成就、专注时长与自律习惯维持，沉淀个人成长',
+    copyWeeklyReportBtn: '复制个人周复盘',
+    weeklyReportSuccess: '📋 已复制本周个人精力复盘至剪贴板',
     heatmapTitle: '近两周产出与状态热力矩阵',
     heatmapHigh: '高频产出',
     timeAllocationTitle: '精力分配结构',
@@ -523,10 +523,10 @@ export const translations = {
 
     // Stats / Analytics Tab
     dailyScoreTitle: 'Daily Energy & Execution Score',
-    weeklyStandupTitle: 'Advisor Weekly / Team Standup Report',
-    weeklyStandupSub: 'One-click extraction of completed P0 items, focus hours & streak',
-    copyWeeklyReportBtn: 'Copy Report',
-    weeklyReportSuccess: '📋 Weekly standup report copied to clipboard',
+    weeklyStandupTitle: 'Weekly Personal Energy Review',
+    weeklyStandupSub: 'One-click summary of core accomplishments, focus hours & habit consistency for personal reflection',
+    copyWeeklyReportBtn: 'Copy Weekly Review',
+    weeklyReportSuccess: '📋 Personal weekly review copied to clipboard',
     heatmapTitle: '14-Day Output & Consistency Heatmap',
     heatmapHigh: 'High Output',
     timeAllocationTitle: 'Cognitive Time Allocation',

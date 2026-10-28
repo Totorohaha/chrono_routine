@@ -141,15 +141,15 @@ assert.strictEqual(computeRemaining(targetEnd, startTime + 15 * 60 * 1000), 10 *
 assert.strictEqual(computeRemaining(targetEnd, startTime + 30 * 60 * 1000), 0);
 console.log('✓ 挂起与锁屏时差计算测试通过');
 
-// 6. Weekly markdown report generator test
-console.log('\n[Test 6] 导师周报 / 团队 Standup 格式化测试...');
+// 6. Weekly personal review generator test
+console.log('\n[Test 6] 本周个人精力与心流复盘格式化测试...');
 function generateWeeklySummary(p0List, focusHours, streak) {
-  let md = `### 📊 脉律 PulseFlow · 科研与工作周度交付简报\n`;
-  md += `#### 🎯 P0 核心攻坚交付\n`;
+  let md = `### 🌿 脉律 PulseFlow · 本周个人精力与心流复盘\n`;
+  md += `#### 🎯 核心要事回顾 (P0)\n`;
   p0List.forEach(item => {
     md += `- [x] ${item}\n`;
   });
-  md += `#### ⏱️ 心流投入与状态对齐\n`;
+  md += `#### ⏱️ 心流投入与习惯自律\n`;
   md += `- **深度心流累计**: ${focusHours} 小时\n`;
   md += `- **习惯维护连续性**: 当前最高连续维持 ${streak} 天\n`;
   return md;
@@ -159,7 +159,7 @@ const sampleReport = generateWeeklySummary(['消融实验跑数', '论文第三�
 assert.ok(sampleReport.includes('消融实验跑数'), '报告应包含 P0 攻坚事项');
 assert.ok(sampleReport.includes('15.5 小时'), '报告应包含心流小时数');
 assert.ok(sampleReport.includes('12 天'), '报告应包含习惯连续天数');
-console.log('✓ 周报自动化 Markdown 格式化测试通过');
+console.log('✓ 个人周复盘自动化 Markdown 格式化测试通过');
 
 // 7. Category & search filter test
 console.log('\n[Test 7] 排期多维检索与类别过滤测试...');

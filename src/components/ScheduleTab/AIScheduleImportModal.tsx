@@ -159,12 +159,12 @@ export const AIScheduleImportModal: React.FC<AIScheduleImportModalProps> = ({
     "note": "对比消融实验 Baseline 性能曲线"
   },
   {
-    "title": "课题组科研进度同步与导师沟通",
+    "title": "项目核心进度复盘与沟通",
     "startTime": "16:30",
     "endTime": "17:30",
     "category": "work",
     "priority": "p1",
-    "note": "汇报本周实验结果与遇到的理论瓶颈"
+    "note": "梳理本周进展与解决遇到的关键瓶颈"
   },
   {
     "title": "晚间户外慢跑与物理断联修复",
