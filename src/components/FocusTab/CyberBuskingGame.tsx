@@ -33,6 +33,45 @@ interface TalentDef {
   face: string[];
 }
 
+/**
+ * Robust canvas text-wrapping helper for Chinese & English
+ */
+function wrapCanvasText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
+  if (!text) return [];
+  // For text with Chinese characters, wrap character by character
+  if (/[\u4e00-\u9fa5]/.test(text)) {
+    const lines: string[] = [];
+    let currentLine = '';
+    for (const char of text) {
+      const testLine = currentLine + char;
+      if (ctx.measureText(testLine).width > maxWidth && currentLine.length > 0) {
+        lines.push(currentLine);
+        currentLine = char;
+      } else {
+        currentLine = testLine;
+      }
+    }
+    if (currentLine) lines.push(currentLine);
+    return lines;
+  }
+
+  // For Latin / English, wrap word by word cleanly
+  const words = text.split(' ');
+  const lines: string[] = [];
+  let currentLine = '';
+  for (const word of words) {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+    if (ctx.measureText(testLine).width > maxWidth && currentLine.length > 0) {
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = testLine;
+    }
+  }
+  if (currentLine) lines.push(currentLine);
+  return lines;
+}
+
 const ALL_TALENTS: TalentDef[] = [
   {
     id: 'erhu',
@@ -497,7 +536,7 @@ export const CyberBuskingGame: React.FC = () => {
       hitFlash: 0
     },
     speech: {
-      text: BEGGING_QUOTES_ZH[0],
+      text: language === 'zh' ? BEGGING_QUOTES_ZH[0] : BEGGING_QUOTES_EN[0],
       timer: 4.5,
       alpha: 1,
       idleCycleTimer: 0
@@ -620,6 +659,18 @@ export const CyberBuskingGame: React.FC = () => {
       setProgressBarWidth(0);
     }
   }, [language]);
+
+  // Synchronize language switch immediately across all speech, HUD & billboard
+  useEffect(() => {
+    updateHUD();
+    const s = appRef.current;
+    if (s.state === 'BEGGING') {
+      const quotes = language === 'zh' ? BEGGING_QUOTES_ZH : BEGGING_QUOTES_EN;
+      s.speech.text = quotes[0];
+      s.speech.alpha = 1;
+      s.speech.timer = 4.5;
+    }
+  }, [language, updateHUD]);
 
   const triggerTalent = useCallback((talentId: string) => {
     const s = appRef.current;
@@ -1613,67 +1664,143 @@ export const CyberBuskingGame: React.FC = () => {
           ctx.fill();
           ctx.stroke();
 
-          // Holographic Signboard
+          // Holographic Signboard (Double Height & Word-Wrapped Big Fonts)
           const signX = getSignLocalX();
-          const signY = -44;
+          const signY = -60;
           const slogan = SLOGANS[s.sloganIndex];
           const glitchShift = s.sloganGlitch > 0 ? (Math.random() - 0.5) * 8 * s.sloganGlitch : 0;
 
+          // Height increased 2x as requested: from 46 to 92
+          const boardW = 136;
+          const boardH = 92;
+          const floatY = signY + Math.sin(time * 3) * 2;
+
           ctx.save();
+          // Metal pole from ground to bottom of billboard
           ctx.strokeStyle = '#475569';
-          ctx.lineWidth = 3;
+          ctx.lineWidth = 3.5;
           ctx.beginPath();
           ctx.moveTo(signX, 0);
-          ctx.lineTo(signX, signY + 18);
+          ctx.lineTo(signX, floatY + boardH / 2);
           ctx.stroke();
 
+          // Base floor mount ring
           ctx.fillStyle = '#334155';
           ctx.beginPath();
-          ctx.ellipse(signX, 0, 16, 4, 0, 0, Math.PI * 2);
+          ctx.ellipse(signX, 0, 18, 4.5, 0, 0, Math.PI * 2);
           ctx.fill();
-
-          const floatY = signY + Math.sin(time * 3) * 2;
-          const boardW = 104;
-          const boardH = 46;
 
           ctx.translate(glitchShift, 0);
 
-          ctx.fillStyle = 'rgba(8, 14, 34, 0.88)';
+          const boardLeft = signX - boardW / 2;
+          const boardTop = floatY - boardH / 2;
+
+          // Holographic neon container
+          ctx.fillStyle = 'rgba(8, 14, 34, 0.94)';
           ctx.strokeStyle = s.sloganGlitch > 0.2 ? '#ff007f' : '#00f3ff';
           ctx.shadowColor = ctx.strokeStyle;
-          ctx.shadowBlur = 10 + s.sloganGlitch * 10;
-          ctx.lineWidth = 1.4;
+          ctx.shadowBlur = 12 + s.sloganGlitch * 12;
+          ctx.lineWidth = 1.6;
+
           ctx.beginPath();
-          if (ctx.roundRect) ctx.roundRect(signX - boardW / 2, floatY - boardH / 2, boardW, boardH, 6);
-          else ctx.rect(signX - boardW / 2, floatY - boardH / 2, boardW, boardH);
+          if (ctx.roundRect) ctx.roundRect(boardLeft, boardTop, boardW, boardH, 8);
+          else ctx.rect(boardLeft, boardTop, boardW, boardH);
           ctx.fill();
           ctx.stroke();
 
-          ctx.shadowBlur = 0;
-          const qrX = signX - boardW / 2 + 6;
-          const qrY = floatY - 15;
+          // Corner cyber accents
           ctx.strokeStyle = '#ffe600';
-          ctx.lineWidth = 1;
-          ctx.strokeRect(qrX, qrY, 22, 22);
+          ctx.lineWidth = 1.4;
+          ctx.shadowBlur = 4;
+          // Top-left
+          ctx.beginPath();
+          ctx.moveTo(boardLeft + 2, boardTop + 8);
+          ctx.lineTo(boardLeft + 2, boardTop + 2);
+          ctx.lineTo(boardLeft + 8, boardTop + 2);
+          ctx.stroke();
+          // Top-right
+          ctx.beginPath();
+          ctx.moveTo(boardLeft + boardW - 8, boardTop + 2);
+          ctx.lineTo(boardLeft + boardW - 2, boardTop + 2);
+          ctx.lineTo(boardLeft + boardW - 2, boardTop + 8);
+          ctx.stroke();
+          // Bottom-left
+          ctx.beginPath();
+          ctx.moveTo(boardLeft + 2, boardTop + boardH - 8);
+          ctx.lineTo(boardLeft + 2, boardTop + boardH - 2);
+          ctx.lineTo(boardLeft + 8, boardTop + boardH - 2);
+          ctx.stroke();
+          // Bottom-right
+          ctx.beginPath();
+          ctx.moveTo(boardLeft + boardW - 8, boardTop + boardH - 2);
+          ctx.lineTo(boardLeft + boardW - 2, boardTop + boardH - 2);
+          ctx.lineTo(boardLeft + boardW - 2, boardTop + boardH - 8);
+          ctx.stroke();
+
+          ctx.shadowBlur = 0;
+
+          // Top Section: QR Code & Title
+          const qrSize = 30;
+          const qrX = boardLeft + 8;
+          const qrY = boardTop + 8;
+
+          ctx.strokeStyle = '#ffe600';
+          ctx.lineWidth = 1.2;
+          ctx.strokeRect(qrX, qrY, qrSize, qrSize);
           ctx.fillStyle = '#ffe600';
-          for (let r = 0; r < 3; r++) {
-            for (let c = 0; c < 3; c++) {
-              if ((r + c + Math.floor(time * 2)) % 2 === 0) {
-                ctx.fillRect(qrX + 3 + c * 5.5, qrY + 3 + r * 5.5, 4, 4);
+          for (let r = 0; r < 4; r++) {
+            for (let c = 0; c < 4; c++) {
+              if ((r * 2 + c * 3 + Math.floor(time * 3)) % 3 !== 0) {
+                ctx.fillRect(qrX + 3 + c * 6.5, qrY + 3 + r * 6.5, 4.5, 4.5);
               }
             }
           }
 
+          // Title Text (Next to QR Code)
+          const titleX = qrX + qrSize + 8;
+          const titleMaxW = boardLeft + boardW - 8 - titleX;
+          const titleText = language === 'zh' ? slogan.titleZh : slogan.titleEn;
+          
           ctx.textAlign = 'left';
           ctx.fillStyle = '#ffffff';
-          ctx.font = 'bold 6.8px sans-serif';
-          ctx.fillText(language === 'zh' ? slogan.titleZh : slogan.titleEn, qrX + 26, floatY - 5);
+          ctx.font = 'bold 9.5px sans-serif';
+          
+          const titleLines = wrapCanvasText(ctx, titleText, titleMaxW);
+          const startTitleY = titleLines.length === 1 ? qrY + 18 : qrY + 12;
+          titleLines.slice(0, 2).forEach((tl, i) => {
+            ctx.fillText(tl, titleX, startTitleY + i * 13);
+          });
 
-          ctx.fillStyle = '#94a3b8';
-          ctx.font = '5.8px sans-serif';
+          // Horizontal Glowing Divider
+          const divY = boardTop + 44;
+          ctx.strokeStyle = 'rgba(0, 243, 255, 0.4)';
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(boardLeft + 8, divY);
+          ctx.lineTo(boardLeft + boardW - 8, divY);
+          ctx.stroke();
+
+          // Subtitle Text (Full width in lower half)
           const subText = language === 'zh' ? slogan.subZh : slogan.subEn;
-          ctx.fillText(subText.slice(0, 12), qrX + 26, floatY + 5);
-          ctx.fillText(subText.slice(12), qrX + 26, floatY + 14);
+          ctx.fillStyle = '#cbd5e1';
+          ctx.font = 'bold 8.2px sans-serif';
+          const subMaxW = boardW - 16;
+          const subLines = wrapCanvasText(ctx, subText, subMaxW);
+          const startSubY = divY + 13;
+          subLines.slice(0, 3).forEach((sl, i) => {
+            ctx.fillText(sl, boardLeft + 8, startSubY + i * 11);
+          });
+
+          // Bottom Cyber Status Tag
+          ctx.textAlign = 'center';
+          ctx.fillStyle = '#00f3ff';
+          ctx.font = 'bold 6.8px monospace';
+          ctx.fillText(
+            language === 'zh' ? '⚡ 脑机打赏通道 · 功德注入 ⚡' : '⚡ DIRECT NEURAL LINK ⚡',
+            signX,
+            boardTop + boardH - 6
+          );
+
           ctx.restore();
 
           // Afterimages
@@ -2193,18 +2320,23 @@ export const CyberBuskingGame: React.FC = () => {
             ctx.restore();
           });
 
-          // Speech Bubble
+          // Speech Bubble with multi-line word-wrapping
           if (s.joints && s.speech.alpha > 0.01) {
             const headTopY = (s.state === 'PERFORMING' && s.currentTalent === 'unicycle')
               ? s.joints.head.y - 52
               : s.joints.head.y - 30;
 
             const text = s.speech.text;
-            const padX = 9;
+            const padX = 10;
             ctx.font = 'bold 8.5px sans-serif';
-            const textW = ctx.measureText(text).width;
-            const boxW = textW + padX * 2;
-            const boxH = 22;
+            
+            // Clean multi-line wrapping for long English or Chinese speech
+            const speechLines = wrapCanvasText(ctx, text, 145);
+            const lineCount = Math.max(1, speechLines.length);
+            const maxLineWidth = Math.max(...speechLines.map(l => ctx.measureText(l).width), 36);
+            const boxW = Math.min(170, maxLineWidth + padX * 2);
+            const lineH = 12;
+            const boxH = lineCount === 1 ? 22 : 12 + lineCount * lineH;
 
             const maxLocalX = (s.viewWidth * 0.46) / s.cameraScale - boxW / 2;
             const clampedX = clamp(s.joints.head.x, -maxLocalX, maxLocalX);
@@ -2212,7 +2344,7 @@ export const CyberBuskingGame: React.FC = () => {
 
             ctx.save();
             ctx.globalAlpha = s.speech.alpha;
-            ctx.fillStyle = 'rgba(10, 15, 35, 0.92)';
+            ctx.fillStyle = 'rgba(10, 15, 35, 0.94)';
             ctx.strokeStyle = '#00f3ff';
             ctx.shadowColor = '#00f3ff';
             ctx.shadowBlur = 10;
@@ -2224,6 +2356,7 @@ export const CyberBuskingGame: React.FC = () => {
             ctx.fill();
             ctx.stroke();
 
+            // Speech bubble tail
             ctx.beginPath();
             ctx.moveTo(clampedX - 4, clampedY);
             ctx.lineTo(clampedX + 4, clampedY);
@@ -2236,7 +2369,10 @@ export const CyberBuskingGame: React.FC = () => {
             ctx.fillStyle = '#f8fafc';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(text, clampedX, clampedY - boxH / 2);
+            const startTextY = clampedY - boxH + (boxH - (lineCount - 1) * lineH) / 2;
+            speechLines.forEach((line, idx) => {
+              ctx.fillText(line, clampedX, startTextY + idx * lineH);
+            });
             ctx.restore();
           }
 
@@ -2308,7 +2444,7 @@ export const CyberBuskingGame: React.FC = () => {
             type="button"
             onClick={handleToggleMute}
             className="p-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 border border-cyan-500/30 backdrop-blur-md text-xs font-mono transition active:scale-95 shadow-md flex items-center space-x-1"
-            title={isMuted ? 'Unmute' : 'Mute'}
+            title={isMuted ? (language === 'zh' ? '取消静音' : 'Unmute') : (language === 'zh' ? '静音' : 'Mute')}
           >
             {isMuted ? <VolumeX className="w-3.5 h-3.5 text-rose-400" /> : <Volume2 className="w-3.5 h-3.5 text-cyan-400" />}
           </button>
@@ -2317,7 +2453,7 @@ export const CyberBuskingGame: React.FC = () => {
             type="button"
             onClick={handleReset}
             className="p-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 border border-cyan-500/30 backdrop-blur-md text-xs font-mono transition active:scale-95 shadow-md flex items-center space-x-1"
-            title="Reset"
+            title={language === 'zh' ? '重置表演' : 'Reset'}
           >
             <RotateCcw className="w-3.5 h-3.5" />
           </button>
@@ -2325,15 +2461,15 @@ export const CyberBuskingGame: React.FC = () => {
 
         {/* Bottom Breathing Tap Prompt */}
         <div className="absolute bottom-3 left-4 right-4 flex justify-between items-center pointer-events-none z-20 font-mono">
-          <div className="px-3 py-1 rounded-full bg-slate-950/85 backdrop-blur-md border border-cyan-500/25 flex items-center space-x-1.5 text-[11px] text-amber-300 shadow-md">
-            <Coins className="w-3.5 h-3.5 text-amber-400" />
+          <div className="px-3.5 py-1.5 rounded-full bg-slate-950/85 backdrop-blur-md border border-cyan-500/25 flex items-center space-x-1.5 text-xs text-amber-300 shadow-md">
+            <Coins className="w-4 h-4 text-amber-400" />
             <span>{language === 'zh' ? '总打赏' : 'Coins'}:</span>
             <span className="font-bold">{coinsCollected}</span>
           </div>
 
-          <div className="px-3 py-1 rounded-full bg-slate-950/85 backdrop-blur-md border border-cyan-500/25 flex items-center space-x-1.5 text-[11px] text-cyan-200 animate-pulse shadow-md">
+          <div className="px-3.5 py-1.5 rounded-full bg-slate-950/85 backdrop-blur-md border border-cyan-500/25 flex items-center space-x-1.5 text-xs text-cyan-200 animate-pulse shadow-md">
             <span>👇</span>
-            <span>{language === 'zh' ? '点击屏幕任意处 · 投币开演' : 'Tap screen to toss coin & start'}</span>
+            <span>{language === 'zh' ? '点击屏幕任意处 · 投币开演' : 'Tap anywhere to toss coin & start'}</span>
           </div>
         </div>
       </div>

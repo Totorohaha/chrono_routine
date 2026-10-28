@@ -672,7 +672,7 @@ export const MindOasis: React.FC = () => {
       {activeMode === 'busking' && (
         <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center relative overflow-hidden">
           <div className="w-full flex items-center justify-between mb-2 z-10">
-            <span className="text-xs font-bold text-slate-700 dark:text-slate-200 font-mono">
+            <span className="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono">
               {t('buskingTitle')}
             </span>
           </div>
