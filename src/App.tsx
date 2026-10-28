@@ -503,7 +503,6 @@ const AppContent: React.FC = () => {
           onToggleMobileFrame={() => setIsMobileFrame(!isMobileFrame)}
           onOpenTemplates={() => setIsTemplatesOpen(true)}
           onOpenSettings={() => setIsSettingsOpen(true)}
-          onOpenAIImport={() => setIsAIImportOpen(true)}
           totalStreak={totalStreak}
         />
 

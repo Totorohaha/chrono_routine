@@ -7,7 +7,6 @@ import {
   BookTemplate, 
   Settings2, 
   Zap, 
-  Bot, 
   Languages 
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -21,7 +20,6 @@ interface HeaderProps {
   onToggleMobileFrame: () => void;
   onOpenTemplates: () => void;
   onOpenSettings: () => void;
-  onOpenAIImport: () => void;
   totalStreak: number;
 }
 
@@ -33,7 +31,6 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleMobileFrame,
   onOpenTemplates,
   onOpenSettings,
-  onOpenAIImport,
   totalStreak,
 }) => {
   const { language, toggleLanguage, t } = useLanguage();
@@ -78,19 +75,6 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Action icons bar */}
         <div className="flex items-center space-x-1 shrink-0">
-          {/* AI Schedule Import Button */}
-          <button
-            onClick={() => {
-              HapticsService.light();
-              onOpenAIImport();
-            }}
-            title={t('aiImport')}
-            className="flex items-center space-x-1 px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-teal-500/10 to-indigo-500/10 hover:from-teal-500/20 hover:to-indigo-500/20 text-teal-700 dark:text-teal-300 border border-teal-300/40 dark:border-teal-700/40 text-xs font-bold transition active:scale-95"
-          >
-            <Bot className="w-4 h-4 text-teal-600 dark:text-teal-400" />
-            <span className="font-mono hidden sm:inline">{t('aiImport')}</span>
-          </button>
-
           {/* Bilingual Switch Toggle */}
           <button
             onClick={handleLangClick}
