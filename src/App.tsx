@@ -523,20 +523,20 @@ const AppContent: React.FC = () => {
                 {/* Search Bar + AI Import Pill */}
                 <div className="flex items-center space-x-2">
                   <div className="relative flex-1 flex items-center">
-                    <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 pointer-events-none" />
+                    <Search className="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" />
                     <input
                       type="text"
                       value={searchKeyword}
                       onChange={(e) => setSearchKeyword(e.target.value)}
                       placeholder={t('searchPlaceholder')}
-                      className="w-full pl-8 pr-7 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-xs placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-teal-500 font-mono transition"
+                      className="w-full pl-9 pr-8 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-teal-500 font-mono transition"
                     />
                     {searchKeyword && (
                       <button
                         onClick={() => setSearchKeyword('')}
-                        className="absolute right-2 text-slate-400 hover:text-slate-600 p-0.5 rounded-full"
+                        className="absolute right-2.5 text-slate-400 hover:text-slate-600 p-0.5 rounded-full"
                       >
-                        <X className="w-3.5 h-3.5" />
+                        <X className="w-4 h-4" />
                       </button>
                     )}
                   </div>
@@ -548,9 +548,9 @@ const AppContent: React.FC = () => {
                       setIsAIImportOpen(true);
                     }}
                     title={t('aiImport')}
-                    className="shrink-0 px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-teal-600 to-indigo-600 text-white text-xs font-bold shadow-xs hover:shadow-md transition active:scale-95 flex items-center space-x-1 font-mono"
+                    className="shrink-0 px-3 py-2 rounded-xl bg-gradient-to-r from-teal-600 to-indigo-600 text-white text-xs sm:text-sm font-bold shadow-xs hover:shadow-md transition active:scale-95 flex items-center space-x-1 font-mono"
                   >
-                    <Bot className="w-3.5 h-3.5" />
+                    <Bot className="w-4 h-4" />
                     <span>{t('aiImport')}</span>
                   </button>
                 </div>
@@ -572,7 +572,7 @@ const AppContent: React.FC = () => {
                         HapticsService.selection();
                         setSelectedCategory(cat.id);
                       }}
-                      className={`px-2.5 py-1 rounded-lg text-[11px] font-medium whitespace-nowrap transition ${
+                      className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap transition ${
                         selectedCategory === cat.id
                           ? 'bg-teal-600 text-white shadow-xs'
                           : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
@@ -587,10 +587,10 @@ const AppContent: React.FC = () => {
               {/* View Mode Switcher */}
               <div className="px-3.5 pt-1.5 pb-2 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 font-mono">
+                  <span className="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 font-mono">
                     {selectedCategory !== 'all' || searchKeyword.trim() ? t('filteredTitle') : t('scheduleTitle')} ({filteredTasks.length} {t('scheduleItemsCount')})
                   </span>
-                  <span className="text-xs text-teal-700 dark:text-teal-300 font-bold bg-teal-50 dark:bg-teal-950/40 px-2 py-0.5 rounded-full font-mono">
+                  <span className="text-xs sm:text-sm text-teal-700 dark:text-teal-300 font-bold bg-teal-50 dark:bg-teal-950/40 px-2.5 py-0.5 rounded-full font-mono">
                     {t('deliveredCount')} {filteredTasks.filter((t) => isTaskCompleted(t, selectedDate)).length}
                   </span>
                   {(selectedCategory !== 'all' || searchKeyword.trim()) && (
@@ -599,7 +599,7 @@ const AppContent: React.FC = () => {
                         setSelectedCategory('all');
                         setSearchKeyword('');
                       }}
-                      className="text-[11px] text-teal-600 dark:text-teal-400 hover:underline font-medium"
+                      className="text-xs text-teal-600 dark:text-teal-400 hover:underline font-medium"
                     >
                       {t('resetFilter')}
                     </button>

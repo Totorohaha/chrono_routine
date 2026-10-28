@@ -143,26 +143,26 @@ export const HabitCard: React.FC<HabitCardProps> = ({
           </div>
 
           <div className="min-w-0 flex-1">
-            <h3 className="font-semibold text-sm text-slate-800 dark:text-slate-100 flex items-center space-x-1.5 truncate leading-tight">
+            <h3 className="font-bold text-sm sm:text-base text-slate-800 dark:text-slate-100 flex items-center space-x-1.5 truncate leading-tight">
               <span className="truncate">{habitTitle}</span>
               {isCompleted && (
-                <span className="inline-flex items-center text-[10px] bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-300 font-semibold px-1.5 py-0.5 rounded-full shrink-0">
+                <span className="inline-flex items-center text-xs bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-300 font-semibold px-2 py-0.5 rounded-full shrink-0">
                   {t('energyCharged')}
                 </span>
               )}
             </h3>
 
             {habitSubtitle && (
-              <p className="text-[11px] text-slate-400 dark:text-slate-500 truncate mt-0.5">
+              <p className="text-xs text-slate-500 dark:text-slate-400 truncate mt-1">
                 {habitSubtitle}
               </p>
             )}
 
-            <div className="flex items-center space-x-2.5 mt-1 text-xs text-slate-400">
-              <span className="flex items-center space-x-0.5 text-teal-600 dark:text-teal-400 font-medium shrink-0 font-mono text-[11px]">
+            <div className="flex items-center space-x-3 mt-1.5 text-xs text-slate-500">
+              <span className="flex items-center space-x-0.5 text-teal-600 dark:text-teal-400 font-medium shrink-0 font-mono text-xs">
                 <span>⚡ {t('habitStreakPrefix')} {habit.streak} {t('habitStreakSuffix')}</span>
               </span>
-              <span className="truncate text-[11px] font-mono">
+              <span className="truncate text-xs font-mono">
                 {t('habitTargetPrefix')}{habit.targetCount} {habitUnit}
               </span>
             </div>
@@ -175,16 +175,16 @@ export const HabitCard: React.FC<HabitCardProps> = ({
             <button
               onClick={handleMinus}
               title={t('stepBackOne')}
-              className="w-7 h-7 rounded-xl flex items-center justify-center bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-500 transition active:scale-90"
+              className="w-8 h-8 rounded-xl flex items-center justify-center bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-500 transition active:scale-90"
             >
-              <Minus className="w-3.5 h-3.5 stroke-[2.5]" />
+              <Minus className="w-4 h-4 stroke-[2.5]" />
             </button>
           )}
 
           <button
             onClick={handleTap}
             title={isCompleted ? t('markDone') : "+1"}
-            className={`w-9 h-9 rounded-2xl flex items-center justify-center transition-all active:scale-90 ${
+            className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-all active:scale-90 ${
               isCompleted
                 ? 'bg-teal-500 text-white shadow-md shadow-teal-500/30'
                 : 'bg-slate-100 dark:bg-slate-800 hover:bg-teal-50 dark:hover:bg-teal-950/40 text-slate-600 dark:text-slate-300 hover:text-teal-600'
@@ -206,7 +206,7 @@ export const HabitCard: React.FC<HabitCardProps> = ({
               }}
               className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
             >
-              <MoreVertical className="w-3.5 h-3.5" />
+              <MoreVertical className="w-4 h-4" />
             </button>
 
             {showMenu && (
@@ -254,13 +254,13 @@ export const HabitCard: React.FC<HabitCardProps> = ({
 
       {/* Progress Bar */}
       <div className="mt-2.5">
-        <div className="flex justify-between items-center text-[10px] text-slate-400 mb-1">
+        <div className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400 mb-1">
           <span>{t('todayStatusLabel')}</span>
-          <span className="font-semibold font-mono text-slate-600 dark:text-slate-300">
+          <span className="font-semibold font-mono text-slate-700 dark:text-slate-200">
             {currentCount} / {habit.targetCount} {habitUnit} ({progressPercent}%)
           </span>
         </div>
-        <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+        <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
           <div
             className="h-full rounded-full transition-all duration-300 ease-out"
             style={{
@@ -273,7 +273,7 @@ export const HabitCard: React.FC<HabitCardProps> = ({
 
       {/* 7-Day Consistency Dot Matrix */}
       <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
-        <span className="text-[10px] text-slate-400 font-medium">{t('last7DaysLabel')}</span>
+        <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">{t('last7DaysLabel')}</span>
         <div className="flex items-center space-x-1.5">
           {last7Days.map((d) => (
             <div
@@ -281,11 +281,11 @@ export const HabitCard: React.FC<HabitCardProps> = ({
               title={`${d.dateStr} (${d.dayLabel}): ${d.count}/${habit.targetCount} ${habitUnit}`}
               className="flex flex-col items-center justify-center"
             >
-              <span className={`text-[9px] mb-0.5 font-mono ${d.isToday ? 'font-bold text-teal-600 dark:text-teal-400' : 'text-slate-400'}`}>
+              <span className={`text-[11px] mb-0.5 font-mono ${d.isToday ? 'font-bold text-teal-600 dark:text-teal-400' : 'text-slate-400'}`}>
                 {d.dayLabel}
               </span>
               <div
-                className={`w-3.5 h-3.5 rounded-full flex items-center justify-center transition-all ${
+                className={`w-4 h-4 rounded-full flex items-center justify-center transition-all ${
                   d.isTargetMet
                     ? 'text-white shadow-xs'
                     : d.count > 0
@@ -296,7 +296,7 @@ export const HabitCard: React.FC<HabitCardProps> = ({
                   backgroundColor: d.isTargetMet ? (habit.color || '#10b981') : undefined,
                 }}
               >
-                {d.isTargetMet && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                {d.isTargetMet && <Check className="w-3 h-3 stroke-[3]" />}
               </div>
             </div>
           ))}

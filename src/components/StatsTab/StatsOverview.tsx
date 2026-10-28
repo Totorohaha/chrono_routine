@@ -291,20 +291,20 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({
         {/* 3 Metric Pills */}
         <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-white/10 text-center font-mono">
           <div>
-            <span className="text-[11px] text-teal-200 block truncate">{t('tasksDeliveredMetric')}</span>
-            <span className="font-bold text-base">
+            <span className="text-xs text-teal-200 block truncate">{t('tasksDeliveredMetric')}</span>
+            <span className="font-bold text-lg">
               {completedTasksCount}/{totalTasksCount}
             </span>
           </div>
           <div>
-            <span className="text-[11px] text-teal-200 block truncate">{t('statusMaintainedMetric')}</span>
-            <span className="font-bold text-base">
+            <span className="text-xs text-teal-200 block truncate">{t('statusMaintainedMetric')}</span>
+            <span className="font-bold text-lg">
               {completedHabitsCount}/{totalHabitsCount}
             </span>
           </div>
           <div>
-            <span className="text-[11px] text-teal-200 block truncate">{t('focusTimeMetric')}</span>
-            <span className="font-bold text-base">{totalFocusMinutes}m</span>
+            <span className="text-xs text-teal-200 block truncate">{t('focusTimeMetric')}</span>
+            <span className="font-bold text-lg">{totalFocusMinutes}m</span>
           </div>
         </div>
       </div>
@@ -312,17 +312,17 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({
       {/* Weekly Report Standup Generator Button */}
       <div className="bg-gradient-to-r from-teal-50 to-emerald-50 dark:from-teal-950/40 dark:to-emerald-950/30 rounded-2xl p-3.5 border border-teal-200/60 dark:border-teal-800/50 flex items-center justify-between">
         <div className="min-w-0 pr-3">
-          <h4 className="text-xs font-bold text-teal-900 dark:text-teal-200 flex items-center space-x-1.5 font-mono">
+          <h4 className="text-xs sm:text-sm font-bold text-teal-900 dark:text-teal-200 flex items-center space-x-1.5 font-mono">
             <FileSpreadsheet className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0" />
             <span className="truncate">{t('weeklyStandupTitle')}</span>
           </h4>
-          <p className="text-[11px] text-teal-700/80 dark:text-teal-400/80 mt-0.5 truncate">
+          <p className="text-xs text-teal-700/80 dark:text-teal-400/80 mt-0.5 truncate">
             {t('weeklyStandupSub')}
           </p>
         </div>
         <button
           onClick={handleExportWeeklyReport}
-          className="shrink-0 px-3 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-700 active:scale-95 text-white text-xs font-semibold shadow-xs flex items-center space-x-1 transition font-mono"
+          className="shrink-0 px-3 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-700 active:scale-95 text-white text-xs sm:text-sm font-semibold shadow-xs flex items-center space-x-1 transition font-mono"
         >
           <Copy className="w-3.5 h-3.5" />
           <span>{t('copyWeeklyReportBtn')}</span>
@@ -332,11 +332,11 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({
       {/* 14-day Heatmap */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/90 dark:border-slate-800 shadow-xs space-y-2.5">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 font-mono">
+          <div className="flex items-center space-x-1.5 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 font-mono">
             <Activity className="w-4 h-4 text-teal-500 shrink-0" />
             <span className="truncate">{t('heatmapTitle')}</span>
           </div>
-          <span className="text-[11px] text-slate-400 font-mono shrink-0">{t('heatmapHigh')}</span>
+          <span className="text-xs text-slate-400 font-mono shrink-0">{t('heatmapHigh')}</span>
         </div>
 
         <div className="grid grid-cols-7 gap-1.5 pt-1">
@@ -359,7 +359,7 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({
                   isToday ? 'ring-2 ring-teal-500 ring-offset-2 dark:ring-offset-slate-900' : ''
                 }`}
               >
-                <span className="text-[11px] font-mono">{d.dayNum}</span>
+                <span className="text-xs font-mono font-medium">{d.dayNum}</span>
               </div>
             );
           })}
@@ -417,9 +417,9 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({
 
         {/* Cognitive Energy Bar */}
         <div>
-          <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1 font-mono">
+          <div className="flex items-center justify-between text-xs text-slate-400 mb-1 font-mono">
             <span className="flex items-center space-x-1">
-              <BatteryCharging className="w-3.5 h-3.5 text-teal-500" />
+              <BatteryCharging className="w-4 h-4 text-teal-500" />
               <span>{t('cognitiveBattery')}</span>
             </span>
             <span className="font-semibold text-teal-600">{energyLevel * 20}%</span>
@@ -430,7 +430,7 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({
                 key={lvl}
                 type="button"
                 onClick={() => setEnergyLevel(lvl)}
-                className={`flex-1 h-2 rounded-full transition-all ${
+                className={`flex-1 h-2.5 rounded-full transition-all ${
                   lvl <= energyLevel ? 'bg-teal-500' : 'bg-slate-100 dark:bg-slate-800'
                 }`}
               />
@@ -440,7 +440,7 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({
 
         {/* Mental focus state */}
         <div>
-          <span className="text-[11px] text-slate-400 block mb-1 font-mono">{t('mentalStateLabel')}</span>
+          <span className="text-xs text-slate-400 block mb-1 font-mono">{t('mentalStateLabel')}</span>
           <div className="flex items-center justify-around py-1">
             {[
               { id: 'super' as const, label: t('moodFlow'), icon: Zap, color: 'text-amber-500' },
@@ -462,7 +462,7 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({
                   }`}
                 >
                   <Icon className={`w-5 h-5 mb-1 ${m.color}`} />
-                  <span className="text-[11px]">{m.label}</span>
+                  <span className="text-xs">{m.label}</span>
                 </button>
               );
             })}

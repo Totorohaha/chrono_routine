@@ -77,7 +77,7 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <span className="text-xs font-bold text-slate-700 dark:text-slate-200 font-mono tracking-tight">
+          <span className="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono tracking-tight">
             {monthYearStr}
           </span>
           <button
@@ -92,9 +92,9 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
         {selectedDate !== today && (
           <button
             onClick={handleGoToday}
-            className="flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/60 hover:bg-teal-100 dark:hover:bg-teal-900/60 transition active:scale-95 border border-teal-200/50 dark:border-teal-800/50 font-mono"
+            className="flex items-center space-x-1 px-2.5 py-1 rounded-full text-xs font-semibold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/60 hover:bg-teal-100 dark:hover:bg-teal-900/60 transition active:scale-95 border border-teal-200/50 dark:border-teal-800/50 font-mono"
           >
-            <RotateCcw className="w-3 h-3" />
+            <RotateCcw className="w-3.5 h-3.5" />
             <span>{t('todayPill')}</span>
           </button>
         )}
@@ -117,18 +117,18 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
                 HapticsService.selection();
                 onSelectDate(dateStr);
               }}
-              className={`flex flex-col items-center py-1.5 px-0.5 rounded-2xl transition relative ${
+              className={`flex flex-col items-center py-2 px-0.5 rounded-2xl transition relative ${
                 isSelected
                   ? 'bg-teal-600 text-white shadow-md shadow-teal-600/30 font-bold ring-2 ring-teal-500/20'
                   : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
               }`}
             >
-              <span className={`text-[10px] font-mono font-medium mb-0.5 ${
+              <span className={`text-xs font-mono font-medium mb-0.5 ${
                 isSelected ? 'text-teal-100' : isToday ? 'text-teal-600 dark:text-teal-400 font-bold' : 'text-slate-400'
               }`}>
                 {language === 'zh' ? weekDayNamesZh[index] : weekDayNamesEn[index]}
               </span>
-              <span className={`text-xs font-bold font-mono ${isToday && !isSelected ? 'text-teal-600 dark:text-teal-400' : ''}`}>
+              <span className={`text-sm sm:text-base font-bold font-mono ${isToday && !isSelected ? 'text-teal-600 dark:text-teal-400' : ''}`}>
                 {d.getDate()}
               </span>
 

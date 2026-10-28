@@ -73,22 +73,22 @@ export const TaskItemCard: React.FC<TaskItemCardProps> = ({
             HapticsService.light();
             onToggleComplete();
           }}
-          className={`w-5 h-5 rounded-lg flex items-center justify-center mt-0.5 transition-colors shrink-0 ${
+          className={`w-6 h-6 rounded-xl flex items-center justify-center mt-0.5 transition-colors shrink-0 ${
             isCompleted
               ? 'bg-teal-500 text-white shadow-xs shadow-teal-500/30'
               : 'border-2 border-slate-300 dark:border-slate-600 hover:border-teal-500'
           }`}
           title={isCompleted ? t('markUndone') : t('markDone')}
         >
-          {isCompleted && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+          {isCompleted && <Check className="w-4 h-4 stroke-[3]" />}
         </button>
 
         {/* Content clickable */}
         <div className="flex-1 min-w-0 cursor-pointer" onClick={() => onEditTask(task)}>
-          <div className="flex items-center space-x-1.5 mb-1">
+          <div className="flex items-center space-x-1.5 mb-1.5">
             <span
               title={taskTitle}
-              className={`text-sm font-semibold truncate leading-snug tracking-tight ${
+              className={`text-sm sm:text-base font-bold truncate leading-snug tracking-tight ${
                 isCompleted
                   ? 'line-through text-slate-400 dark:text-slate-500'
                   : 'text-slate-800 dark:text-slate-100'
@@ -100,28 +100,28 @@ export const TaskItemCard: React.FC<TaskItemCardProps> = ({
 
           {/* Time & tags */}
           <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 leading-none">
-            <div className="flex items-center space-x-1 font-mono text-[11px] text-slate-500 dark:text-slate-400">
-              <Clock className="w-3 h-3 text-slate-400 shrink-0" />
+            <div className="flex items-center space-x-1 font-mono text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+              <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               <span>
                 {task.isAllDay ? t('allDay') : `${task.startTime} - ${task.endTime}`}
               </span>
             </div>
 
             {/* Category Pill */}
-            <span className={`inline-flex items-center space-x-1 px-1.5 py-0.5 rounded-md ${cat.bg} ${cat.text} font-medium text-[10px]`}>
-              <CatIcon className="w-2.5 h-2.5" />
+            <span className={`inline-flex items-center space-x-1 px-2 py-0.5 rounded-lg ${cat.bg} ${cat.text} font-medium text-xs`}>
+              <CatIcon className="w-3 h-3" />
               <span>{catLabel}</span>
             </span>
 
             {/* Priority dot */}
-            <span className={`inline-flex items-center space-x-1 text-[10px] ${prio.text}`}>
+            <span className={`inline-flex items-center space-x-1 text-xs ${prio.text}`}>
               <span className={`w-1.5 h-1.5 rounded-full ${prio.dot}`} />
               <span>{prioLabel}</span>
             </span>
 
             {/* Focus time spent if any */}
             {(task.focusMinutes || 0) > 0 && (
-              <span className="text-[10px] text-teal-600 dark:text-teal-400 font-mono font-medium">
+              <span className="text-xs text-teal-600 dark:text-teal-400 font-mono font-medium">
                 ⏱️ {task.focusMinutes}m
               </span>
             )}
@@ -129,7 +129,7 @@ export const TaskItemCard: React.FC<TaskItemCardProps> = ({
 
           {/* Note if present */}
           {taskNote && (
-            <p className="mt-1 text-[11px] text-slate-400 dark:text-slate-500 line-clamp-1 leading-normal font-mono">
+            <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed font-mono">
               💡 {taskNote}
             </p>
           )}
@@ -145,9 +145,9 @@ export const TaskItemCard: React.FC<TaskItemCardProps> = ({
               onEditTask(task);
             }}
             title={t('editTask')}
-            className="p-1.5 rounded-xl text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition active:scale-95"
+            className="p-2 rounded-xl text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition active:scale-95"
           >
-            <Pencil className="w-3.5 h-3.5" />
+            <Pencil className="w-4 h-4" />
           </button>
 
           <button
@@ -158,9 +158,9 @@ export const TaskItemCard: React.FC<TaskItemCardProps> = ({
               onDeleteTask(task.id);
             }}
             title={t('deleteTask')}
-            className="p-1.5 rounded-xl text-slate-400 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition active:scale-95"
+            className="p-2 rounded-xl text-slate-400 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition active:scale-95"
           >
-            <Trash2 className="w-3.5 h-3.5" />
+            <Trash2 className="w-4 h-4" />
           </button>
         </div>
       </div>

@@ -72,13 +72,13 @@ export const TimelineView: React.FC<TimelineViewProps> = ({
           return (
             <div key={task.id} className="relative flex items-start space-x-2.5">
               {/* Left Time Column & Node */}
-              <div className="w-12 pt-3 text-right flex flex-col items-end shrink-0">
-                <span className={`text-[11px] font-mono font-semibold tracking-tight ${
-                  isOngoing ? 'text-teal-600 dark:text-teal-400 font-bold' : 'text-slate-400 dark:text-slate-500'
+              <div className="w-14 sm:w-16 pt-3 text-right flex flex-col items-end shrink-0">
+                <span className={`text-xs sm:text-sm font-mono font-semibold tracking-tight ${
+                  isOngoing ? 'text-teal-600 dark:text-teal-400 font-bold' : 'text-slate-500 dark:text-slate-400'
                 }`}>
                   {task.isAllDay ? t('allDay') : task.startTime}
                 </span>
-                <span className="text-[10px] font-mono text-slate-300 dark:text-slate-600">
+                <span className="text-xs font-mono text-slate-400 dark:text-slate-500">
                   {task.isAllDay ? '' : task.endTime}
                 </span>
               </div>

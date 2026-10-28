@@ -31,12 +31,12 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           onClick={() => handleTabClick('schedule')}
           className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl transition ${
             activeTab === 'schedule'
-              ? 'text-teal-600 dark:text-teal-400 font-semibold'
+              ? 'text-teal-600 dark:text-teal-400 font-bold'
               : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
           }`}
         >
           <Calendar className="w-5 h-5 mb-0.5" />
-          <span className="text-[11px] truncate max-w-[64px]">{t('navSchedule')}</span>
+          <span className="text-xs font-medium truncate max-w-[72px]">{t('navSchedule')}</span>
         </button>
 
         {/* Maintenance / Habits */}
@@ -44,12 +44,12 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           onClick={() => handleTabClick('habits')}
           className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl transition ${
             activeTab === 'habits'
-              ? 'text-teal-600 dark:text-teal-400 font-semibold'
+              ? 'text-teal-600 dark:text-teal-400 font-bold'
               : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
           }`}
         >
           <Zap className="w-5 h-5 mb-0.5" />
-          <span className="text-[11px] truncate max-w-[64px]">{t('navHabits')}</span>
+          <span className="text-xs font-medium truncate max-w-[72px]">{t('navHabits')}</span>
         </button>
 
         {/* Center Floating Action Button */}
@@ -68,12 +68,12 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           onClick={() => handleTabClick('focus')}
           className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl transition ${
             activeTab === 'focus'
-              ? 'text-teal-600 dark:text-teal-400 font-semibold'
+              ? 'text-teal-600 dark:text-teal-400 font-bold'
               : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
           }`}
         >
           <Wind className="w-5 h-5 mb-0.5" />
-          <span className="text-[11px] truncate max-w-[64px]">{t('navFocus')}</span>
+          <span className="text-xs font-medium truncate max-w-[72px]">{t('navFocus')}</span>
         </button>
 
         {/* Energy Analytics */}
@@ -81,12 +81,12 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           onClick={() => handleTabClick('stats')}
           className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl transition ${
             activeTab === 'stats'
-              ? 'text-teal-600 dark:text-teal-400 font-semibold'
+              ? 'text-teal-600 dark:text-teal-400 font-bold'
               : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
           }`}
         >
           <BarChart3 className="w-5 h-5 mb-0.5" />
-          <span className="text-[11px] truncate max-w-[64px]">{t('navStats')}</span>
+          <span className="text-xs font-medium truncate max-w-[72px]">{t('navStats')}</span>
         </button>
       </div>
     </nav>

@@ -95,15 +95,15 @@ export const TaskListView: React.FC<TaskListViewProps> = ({
           <div key={section.title} className="space-y-2">
             <div className="flex items-center justify-between px-1">
               <div className="flex items-baseline space-x-1.5 min-w-0 flex-1 mr-2">
-                <Icon className={`w-3.5 h-3.5 ${section.color} shrink-0 self-center`} />
-                <h3 className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
+                <Icon className={`w-4 h-4 ${section.color} shrink-0 self-center`} />
+                <h3 className="text-sm sm:text-base font-bold text-slate-800 dark:text-slate-100 truncate">
                   {section.title}
                 </h3>
-                <span className="text-[10px] text-slate-400 truncate hidden sm:inline">
+                <span className="text-xs text-slate-400 truncate hidden sm:inline">
                   {section.subtitle}
                 </span>
               </div>
-              <span className="text-[10px] text-teal-700 dark:text-teal-400 font-mono font-medium px-2 py-0.5 rounded-full bg-teal-50 dark:bg-teal-950/40 border border-teal-200/40 dark:border-teal-800/40 shrink-0">
+              <span className="text-xs text-teal-700 dark:text-teal-400 font-mono font-medium px-2.5 py-0.5 rounded-full bg-teal-50 dark:bg-teal-950/40 border border-teal-200/40 dark:border-teal-800/40 shrink-0">
                 {completedCount}/{section.tasks.length} {t('deliveredCount')}
               </span>
             </div>
