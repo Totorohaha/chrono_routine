@@ -4,20 +4,20 @@ import { getTodayStr, formatDate, parseLocalDate } from '../utils/date';
 export { getTodayStr, formatDate, parseLocalDate };
 
 const STORAGE_KEYS = {
-  SCHEDULES: 'pulseflow_schedules_v4',
-  HABITS: 'pulseflow_habits_v4',
-  FOCUS_RECORDS: 'pulseflow_focus_records_v4',
-  REFLECTIONS: 'pulseflow_reflections_v4',
+  SCHEDULES: 'pulseflow_schedules_v5',
+  HABITS: 'pulseflow_habits_v5',
+  FOCUS_RECORDS: 'pulseflow_focus_records_v5',
+  REFLECTIONS: 'pulseflow_reflections_v5',
   DARK_MODE: 'pulseflow_dark_mode',
 };
 
-// Default habits for grad students, PhDs, and young professionals
+// Default habits - starting clean with 0 streak and empty history
 const INITIAL_HABITS: HabitItem[] = [
   {
     id: 'habit-1',
     title: '晨光采光 15分钟',
     titleEn: 'Morning Sunlight 15m',
-    subtitle: '校准生物钟，阻断学术/工作失眠',
+    subtitle: '校准生物钟，阻断作息失眠',
     subtitleEn: 'Calibrate master circadian clock, prevent insomnia',
     icon: 'Sun',
     color: '#f59e0b',
@@ -26,7 +26,7 @@ const INITIAL_HABITS: HabitItem[] = [
     unitEn: 'times',
     frequency: 'daily',
     history: {},
-    streak: 6,
+    streak: 0,
     createdAt: '2026-10-01',
   },
   {
@@ -42,7 +42,7 @@ const INITIAL_HABITS: HabitItem[] = [
     unitEn: 'blocks',
     frequency: 'workdays',
     history: {},
-    streak: 9,
+    streak: 0,
     createdAt: '2026-10-01',
   },
   {
@@ -58,7 +58,7 @@ const INITIAL_HABITS: HabitItem[] = [
     unitEn: 'times',
     frequency: 'daily',
     history: {},
-    streak: 5,
+    streak: 0,
     createdAt: '2026-10-01',
   },
   {
@@ -74,7 +74,7 @@ const INITIAL_HABITS: HabitItem[] = [
     unitEn: 'times',
     frequency: 'workdays',
     history: {},
-    streak: 7,
+    streak: 0,
     createdAt: '2026-10-01',
   },
   {
@@ -90,7 +90,7 @@ const INITIAL_HABITS: HabitItem[] = [
     unitEn: 'times',
     frequency: 'daily',
     history: {},
-    streak: 4,
+    streak: 0,
     createdAt: '2026-10-01',
   },
 ];
@@ -109,8 +109,8 @@ const createInitialTasks = (): ScheduleItem[] => {
       endTime: '08:00',
       isAllDay: false,
       priority: 'p0',
-      completed: true,
-      completedDates: [today],
+      completed: false,
+      completedDates: [],
       repeat: 'daily',
       note: '户外采光唤醒大脑视网膜神经元，重置全天昼夜节律',
       noteEn: 'Outdoor sunlight exposure resets retinal neurons and circadian baseline',
@@ -126,8 +126,8 @@ const createInitialTasks = (): ScheduleItem[] => {
       endTime: '11:00',
       isAllDay: false,
       priority: 'p0',
-      completed: true,
-      completedDates: [today],
+      completed: false,
+      completedDates: [],
       repeat: 'workdays',
       note: '关闭一切通讯工具，只攻坚今天最核心的 Paper 或系统架构设计',
       noteEn: 'Notifications muted, single-thread attack on today top paper/architecture',
@@ -143,8 +143,8 @@ const createInitialTasks = (): ScheduleItem[] => {
       endTime: '13:00',
       isAllDay: false,
       priority: 'p1',
-      completed: true,
-      completedDates: [today],
+      completed: false,
+      completedDates: [],
       repeat: 'daily',
       note: '脱离工位与实验室环境，平稳血糖，促进潜意识思维联想',
       noteEn: 'Step away from desk, stabilize blood glucose, allow mental incubation',
@@ -227,12 +227,10 @@ export const StorageService = {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.HABITS);
       if (!data) {
-        const today = getTodayStr();
-        const habits = INITIAL_HABITS.map((h, idx) => ({
+        const habits = INITIAL_HABITS.map((h) => ({
           ...h,
-          history: {
-            [today]: idx < 3 ? h.targetCount : (idx === 3 ? 3 : 0),
-          },
+          history: {},
+          streak: 0,
         }));
         localStorage.setItem(STORAGE_KEYS.HABITS, JSON.stringify(habits));
         return habits;
@@ -251,27 +249,8 @@ export const StorageService = {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.FOCUS_RECORDS);
       if (!data) {
-        const today = getTodayStr();
-        const mock: FocusRecord[] = [
-          {
-            id: 'f-1',
-            taskTitle: '文献精读与核心理论推演',
-            category: 'research',
-            durationMinutes: 90,
-            date: today,
-            timestamp: `${today} 10:15`,
-          },
-          {
-            id: 'f-2',
-            taskTitle: '4-7-8 脑雾清理',
-            category: 'mind',
-            durationMinutes: 15,
-            date: today,
-            timestamp: `${today} 13:40`,
-          },
-        ];
-        localStorage.setItem(STORAGE_KEYS.FOCUS_RECORDS, JSON.stringify(mock));
-        return mock;
+        localStorage.setItem(STORAGE_KEYS.FOCUS_RECORDS, JSON.stringify([]));
+        return [];
       }
       return JSON.parse(data);
     } catch {
@@ -298,10 +277,16 @@ export const StorageService = {
     localStorage.setItem(STORAGE_KEYS.REFLECTIONS, JSON.stringify(reflections));
   },
 
+  saveAllReflections: (reflections: Record<string, DayReflection>) => {
+    localStorage.setItem(STORAGE_KEYS.REFLECTIONS, JSON.stringify(reflections));
+  },
+
   clearAllData: () => {
-    localStorage.removeItem(STORAGE_KEYS.SCHEDULES);
-    localStorage.removeItem(STORAGE_KEYS.HABITS);
-    localStorage.removeItem(STORAGE_KEYS.FOCUS_RECORDS);
-    localStorage.removeItem(STORAGE_KEYS.REFLECTIONS);
+    // Purge both v5 and legacy keys to guarantee a 100% clean slate
+    const keysToPurge = [
+      'pulseflow_schedules_v5', 'pulseflow_habits_v5', 'pulseflow_focus_records_v5', 'pulseflow_reflections_v5',
+      'pulseflow_schedules_v4', 'pulseflow_habits_v4', 'pulseflow_focus_records_v4', 'pulseflow_reflections_v4'
+    ];
+    keysToPurge.forEach((k) => localStorage.removeItem(k));
   },
 };

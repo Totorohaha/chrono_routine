@@ -188,11 +188,10 @@ const AppContent: React.FC = () => {
     return true;
   });
 
-  // Overall streak calculation: max streak from habits
-  const totalStreak = Math.max(
-    ...habits.map((h) => h.streak || 0),
-    1
-  );
+  // Overall streak calculation: max streak from habits (starts fresh at 0)
+  const totalStreak = habits.length > 0
+    ? Math.max(0, ...habits.map((h) => h.streak || 0))
+    : 0;
 
   // Task counts by date for the calendar
   const getTaskCountsByDate = () => {
@@ -435,7 +434,7 @@ const AppContent: React.FC = () => {
       unit: language === 'zh' ? h.unit : (h.unitEn || h.unit),
       id: `tpl_habit_${Date.now()}_${idx}`,
       history: {},
-      streak: 1,
+      streak: 0,
       createdAt: getTodayStr(),
     }));
 

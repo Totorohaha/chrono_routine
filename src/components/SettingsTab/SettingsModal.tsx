@@ -8,12 +8,14 @@ import {
   Zap, 
   ShieldCheck, 
   Copy, 
-  Check 
+  Check,
+  Languages
 } from 'lucide-react';
 import { ScheduleItem, HabitItem, FocusRecord } from '../../types';
 import { StorageService } from '../../services/storage';
 import { useToast } from '../UI/Toast';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { HapticsService } from '../../services/haptics';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -32,7 +34,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   focusRecords,
   onDataRestored,
 }) => {
-  const { t } = useLanguage();
+  const { language, toggleLanguage, t } = useLanguage();
   const { showToast } = useToast();
   const [copiedCmd, setCopiedCmd] = React.useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -71,7 +73,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         if (json.habits) StorageService.saveHabits(json.habits);
         if (json.focusRecords) StorageService.saveFocusRecords(json.focusRecords);
         if (json.reflections) {
-          localStorage.setItem('pulseflow_reflections_v4', JSON.stringify(json.reflections));
+          StorageService.saveAllReflections(json.reflections);
         }
         showToast(t('restoreSuccessMsg'), 'success');
         onDataRestored();
@@ -153,6 +155,46 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <p className="text-[11px] text-slate-400">
               {t('androidBuildHelp')}
             </p>
+          </div>
+
+          {/* Language Selection */}
+          <div className="space-y-2">
+            <span className="block text-xs font-semibold text-slate-500 dark:text-slate-400 font-mono flex items-center space-x-1.5">
+              <Languages className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
+              <span>{language === 'zh' ? '界面语言 / Language' : 'Language / 界面语言'}</span>
+            </span>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={() => {
+                  if (language !== 'zh') {
+                    HapticsService.selection();
+                    toggleLanguage();
+                  }
+                }}
+                className={`flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-xl border text-xs font-bold transition font-mono ${
+                  language === 'zh'
+                    ? 'bg-teal-50 dark:bg-teal-950/60 border-teal-500 text-teal-700 dark:text-teal-300 ring-1 ring-teal-500 shadow-2xs'
+                    : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                }`}
+              >
+                <span>🇨🇳 简体中文</span>
+              </button>
+              <button
+                onClick={() => {
+                  if (language !== 'en') {
+                    HapticsService.selection();
+                    toggleLanguage();
+                  }
+                }}
+                className={`flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-xl border text-xs font-bold transition font-mono ${
+                  language === 'en'
+                    ? 'bg-teal-50 dark:bg-teal-950/60 border-teal-500 text-teal-700 dark:text-teal-300 ring-1 ring-teal-500 shadow-2xs'
+                    : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                }`}
+              >
+                <span>🇺🇸 English</span>
+              </button>
+            </div>
           </div>
 
           {/* Backup & Restore */}

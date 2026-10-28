@@ -57,12 +57,12 @@ html, body {
   scrollbar-width: none;
 }
 
-/* Safe area padding utilities for notch / gesture bar on Android */
+/* Safe area padding utilities for notch / gesture bar on Android & iOS */
 .pt-safe {
-  padding-top: env(safe-area-inset-top, 0px);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 0.5rem);
 }
 .pb-safe {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
 }
 
 /* Floating merit text animation */

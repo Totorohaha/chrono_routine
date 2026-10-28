@@ -51,7 +51,7 @@ export const MindOasis: React.FC = () => {
   // ==========================================
   const [meritCount, setMeritCount] = useState<number>(() => {
     const saved = localStorage.getItem('pulseflow_cyber_merit');
-    return saved ? parseInt(saved, 10) || 0 : 66;
+    return saved ? parseInt(saved, 10) || 0 : 0;
   });
   const [isKnocking, setIsKnocking] = useState(false);
   const [floatingTexts, setFloatingTexts] = useState<FloatingTextItem[]>([]);
