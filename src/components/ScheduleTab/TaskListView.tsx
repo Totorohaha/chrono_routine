@@ -86,7 +86,7 @@ export const TaskListView: React.FC<TaskListViewProps> = ({
   }
 
   return (
-    <div className="space-y-4 px-3 py-2">
+    <div className="space-y-4 px-3 py-2 pb-8">
       {sections.map((section) => {
         const Icon = section.icon;
         const completedCount = section.tasks.filter((task) => isTaskCompleted(task, selectedDate)).length;

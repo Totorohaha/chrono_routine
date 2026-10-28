@@ -58,7 +58,7 @@ export const TimelineView: React.FC<TimelineViewProps> = ({
   }
 
   return (
-    <div className="relative px-3 py-2">
+    <div className="relative px-3 py-2 pb-8">
       <div className="space-y-3">
         {sortedTasks.map((task, idx) => {
           const completed = isTaskCompleted(task, selectedDate);

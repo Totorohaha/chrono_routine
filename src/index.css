@@ -8,7 +8,7 @@
   text-rendering: optimizeLegibility;
 }
 
-body {
+html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -16,6 +16,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: -0.01em;
+  scrollbar-gutter: stable;
 }
 
 /* Custom scrollbar for mobile clean look */
@@ -32,6 +33,13 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(156, 163, 175, 0.7);
+}
+
+/* Stable scrollbar to prevent cumulative layout shift and width jumping */
+.stable-scroll {
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.4) transparent;
 }
 
 .no-scrollbar::-webkit-scrollbar {

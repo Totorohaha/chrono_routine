@@ -119,7 +119,7 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
               }}
               className={`flex flex-col items-center py-1.5 px-0.5 rounded-2xl transition relative ${
                 isSelected
-                  ? 'bg-teal-600 text-white shadow-md shadow-teal-600/30 scale-105'
+                  ? 'bg-teal-600 text-white shadow-md shadow-teal-600/30 font-bold ring-2 ring-teal-500/20'
                   : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
               }`}
             >
