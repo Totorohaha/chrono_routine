@@ -81,7 +81,7 @@ const INITIAL_HABITS: HabitItem[] = [
     id: 'habit-5',
     title: '夜间物理断网与低暖光',
     titleEn: 'Night Disconnect & Low Warm Light',
-    subtitle: '避免深夜反刍科研与职场焦虑',
+    subtitle: '避免深夜情绪反刍，保持心境平和',
     subtitleEn: 'Shield circadian melatonin from night-time rumination',
     icon: 'Moon',
     color: '#6366f1',

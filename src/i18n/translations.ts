@@ -4,7 +4,7 @@ export const translations = {
   zh: {
     // Brand & App
     appName: '脉律 PulseFlow',
-    appTagline: '研博与年轻职场人的科学精力日程',
+    appTagline: '科学精力日程与心神解压工坊',
     appSubtitle: '顺应超昼夜生物节律 · 单线程攻坚 · 拒绝伪勤奋',
 
     // Header & Actions
@@ -145,7 +145,7 @@ export const translations = {
     soundStream: '夏林清风',
 
     // Habits / Routine Maintenance Tab
-    maintenanceHeading: '研博与职场状态维护',
+    maintenanceHeading: '每日状态维护',
     maintenanceSubheading: '保持微习惯底线，避免认知倦怠与慢性失眠',
     newMaintenanceBtn: '新建维护项',
     habitStreakPrefix: '稳定维持',
@@ -245,8 +245,8 @@ export const translations = {
 
     // Settings Modal
     settingsModalTitle: '应用设置与数据管理',
-    settingsMissionTitle: '设计主旨：面向研博与高知职场人的科学精力管理',
-    settingsMissionDesc: '拒绝无意义的熬夜内耗与伪勤奋。「脉律 PulseFlow」针对论文文献精读、实验推进、核心业务开发与脑雾排解设计，融合 90m 超昼夜心流周期、4-7-8 呼吸减压与 NSDR 快充，保护科研人与职场人的认知资产与身体机能。',
+    settingsMissionTitle: '设计主旨：科学精力与节奏管理',
+    settingsMissionDesc: '拒绝无意义的熬夜内耗与伪勤奋。「脉律 PulseFlow」针对深度专注、核心攻坚与身心调节设计，融合 90m 超昼夜心流周期、4-7-8 呼吸减压与 NSDR 快充，保护高质认知资产与身体机能。',
     androidBuildTitle: '原生 Android 打包指令',
     copiedCode: '已复制',
     copyCode: '复制代码',
@@ -254,17 +254,17 @@ export const translations = {
     dataManageTitle: '数据管理与离线备份',
     exportJson: '导出备份数据',
     importJson: '导入恢复数据',
-    resetDefaultPlan: '重置为硕博科研/职场人标准作息',
-    resetConfirmMsg: '确定要重置为默认的「研博与职场人科学作息方案」吗？当前记录将被重置。',
-    resetSuccessMsg: '已重置为研博/职场推荐方案',
+    resetDefaultPlan: '重置为科学推荐标准作息',
+    resetConfirmMsg: '确定要重置为默认的科学作息方案吗？当前记录将被重置。',
+    resetSuccessMsg: '已重置为推荐作息方案',
     exportSuccessMsg: '备份文件导出成功',
     restoreSuccessMsg: '精力与排期数据恢复成功！',
     restoreErrorMsg: '文件解析失败，请检查备份文件',
     securityNote: '脉律 PulseFlow v4.0 · 零数据上报 · 离线安全',
 
     // Template Library Modal
-    templateModalTitle: '研博与职场人 · 精力方案库',
-    templateModalSub: '专为高校科研人、硕博生与年轻脑力工作者定制',
+    templateModalTitle: '科学精力方案库',
+    templateModalSub: '针对高负荷攻坚人群定制的科学作息体系',
     targetAudience: '适配人群',
     matchingTasks: '配套节奏排期',
     matchingHabits: '配套护体微习惯',
@@ -327,7 +327,7 @@ export const translations = {
     iconSmile: '愉悦',
     iconSmartphone: '控屏',
     iconEye: '护眼',
-    presetAcademicPill: '研博与职场人高频事项',
+    presetAcademicPill: '高频推荐事项',
     habitMeaningLabel: '身心意义与温暖寄语',
     habitMeaningPlaceholder: '例如：给眼睛和大脑一次温柔的休整',
     habitColorPalette: '温润色彩',
@@ -608,8 +608,8 @@ export const translations = {
 
     // Settings Modal
     settingsModalTitle: 'Settings & Data Management',
-    settingsMissionTitle: 'Design Mission: Cognitive Pacing for Researchers & Engineers',
-    settingsMissionDesc: 'Rejecting burnout and fake busyness. PulseFlow is tailored for literature reviews, model training, and deep engineering, integrating 90m ultradian cycles, 4-7-8 resets, and NSDR recharges.',
+    settingsMissionTitle: 'Design Mission: Cognitive Energy & Rhythm Pacing',
+    settingsMissionDesc: 'Rejecting burnout and fake busyness. PulseFlow is tailored for deep work, core milestones, and mind clarity, integrating 90m ultradian cycles, 4-7-8 resets, and NSDR recharges.',
     androidBuildTitle: 'Android Build Commands',
     copiedCode: 'Copied',
     copyCode: 'Copy Code',
@@ -617,8 +617,8 @@ export const translations = {
     dataManageTitle: 'Data Management & Offline Backup',
     exportJson: 'Export Backup Data',
     importJson: 'Import / Restore Data',
-    resetDefaultPlan: 'Reset to Default Research Routine',
-    resetConfirmMsg: 'Reset all data to default research & engineering routine? Existing records will be overwritten.',
+    resetDefaultPlan: 'Reset to Default Scientific Routine',
+    resetConfirmMsg: 'Reset all data to default scientific routine? Existing records will be overwritten.',
     resetSuccessMsg: 'Reset to default routine successfully',
     exportSuccessMsg: 'Backup exported successfully',
     restoreSuccessMsg: 'Data restored successfully!',
@@ -627,7 +627,7 @@ export const translations = {
 
     // Template Library Modal
     templateModalTitle: 'Routine Protocols Library',
-    templateModalSub: 'Designed for PhDs, researchers, and knowledge workers',
+    templateModalSub: 'Tailored for deep focus and high-performance cognitive pacing',
     targetAudience: 'Target Audience',
     matchingTasks: 'Included Schedule Tasks',
     matchingHabits: 'Included Baseline Habits',

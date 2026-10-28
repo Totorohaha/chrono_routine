@@ -1,7 +1,7 @@
 // Comprehensive Test Suite for PulseFlow (脉律)
 import assert from 'node:assert';
 
-console.log('=== 开始全面自动化研博与职场人精力排期功能测试 ===\n');
+console.log('=== 开始全面自动化精力排期功能测试 ===\n');
 
 // 1. Date utilities test
 function parseLocalDate(dateStr) {
@@ -30,7 +30,7 @@ assert.strictEqual(formatDate(testYearEnd), '2027-01-01', '跨年计算应为 20
 console.log('✓ 日期跨月跨年边界通过');
 
 // 2. Recurrence rules test
-console.log('\n[Test 2] 科研/职场排期激活与独立完成状态测试...');
+console.log('\n[Test 2] 核心排期激活与独立完成状态测试...');
 
 function isTaskActiveOnDate(task, targetDate) {
   if (task.repeat === 'none') {
@@ -85,7 +85,7 @@ dailyTask.completedDates.push('2026-10-26');
 
 assert.strictEqual(isTaskCompleted(dailyTask, '2026-10-26'), true, '周一显示已交付');
 assert.strictEqual(isTaskCompleted(dailyTask, '2026-10-27'), false, '周二保持未完成，独立记录');
-console.log('✓ 科研排期跨日独立交付状态测试通过');
+console.log('✓ 核心排期跨日独立交付状态测试通过');
 
 // 3. 4-7-8 Breathing Loop logic test (Ref based)
 console.log('\n[Test 3] 4-7-8 呼吸减压算法无死锁回归测试...');

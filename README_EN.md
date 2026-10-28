@@ -6,7 +6,7 @@
 
 <p align="center">
   <b>Harmonize with Circadian Rhythms · Single-Threaded Deep Work · Sensory Micro-Rest</b><br/>
-  A minimalist, rational, high-texture energy management and sensory decompression app designed for researchers, postgraduates, and engineers.
+  A minimalist, rational, high-texture energy management and sensory decompression app designed for deep thinkers, creators, and engineers.
 </p>
 
 <p align="center">

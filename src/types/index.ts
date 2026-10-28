@@ -64,7 +64,7 @@ export interface RoutineTemplate {
   titleEn?: string;
   subtitle: string;
   subtitleEn?: string;
-  targetGroup: string; // e.g. "硕博科研 / 论文攻坚", "年轻大厂打工人 / 工程师"
+  targetGroup: string; // e.g. "深度思考 / 攻坚创作者"
   targetGroupEn?: string;
   citation: string;
   citationEn?: string;
