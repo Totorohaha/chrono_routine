@@ -91,10 +91,10 @@ Eliminating buzzwords, preachy slogans, and clutter, Mind Oasis delivers sensory
 flowchart TD
     subgraph Oasis["🍃 Mind Oasis"]
         Nav["📱 Unobstructed Native Smooth Slider (Auto-Centering)"]
-        G1["🪵 Cyber Muyu<br/>Haptic Knocking · Merit +1 · Auto Knock"]
+        G1["🪵 Lucky Muyu<br/>Haptic Knocking · Merit +1 · Auto Knock"]
         G2["🚬 Cyber Smoke<br/>Zero-Text Luxury Edition · 4-4-6 Respiration · Capsules · Tap Ash"]
         G3["🪐 Gravity Stars<br/>120-Particle Gravitational Vortex · Pentatonic Chimes"]
-        G4["🎪 Cyber Street Arts<br/>9 Multi-Stage Talents · FK Skeleton Kinematics · WebAudio Synth"]
+        G4["🎪 Street Busking<br/>9 Multi-Stage Talents · FK Skeleton Kinematics · WebAudio Synth"]
         G5["🐱 Cloud Pet Cat<br/>Napping Kitten · Soothing Touch (In Dev)"]
         G6["🐕 Grassland Walk Dog<br/>Playful Pup · Frisbee Toss (In Dev)"]
         Sound["🎧 Offline Soundscapes<br/>Natural Rain · Deep Ocean · Forest Stream"]
@@ -103,7 +103,7 @@ flowchart TD
     Oasis --> Sound
 ```
 
-- **🪵 Cyber Muyu**: Authentic woodblock resonance, striker physics rebound, gold sparkle burst, customizable blessings (Merit +1 / Hair +1 / Bug -1), and auto-knocking mode.
+- **🪵 Lucky Muyu**: Authentic woodblock resonance, striker physics rebound, gold sparkle burst, customizable blessings (Merit +1 / Hair +1 / Bug -1), and auto-knocking mode.
 - **🚬 Cyber Smoke (Zero-Text Luxury Edition)**:
   - **Strict Zero-Text Compliance**: Pack exterior, flip-top lid, gold inner foil, and cigarette body render zero letters, logos, or slogans, relying purely on geometric, Baroque, and Art Deco vector crafts.
   - **5 Pre-Baked Luxury Packs**: Obsidian Sunburst, Crimson Seigaiha, Glacier Prism (with crushable capsule), Emerald Guilloché, and Titanium Damascus (with dual capsules).
@@ -111,7 +111,7 @@ flowchart TD
   - **Standardized 4-4-6 Respiration Cycle**: 4.0s Deep Inhale (glowing cherry ember heating up) $\to$ 4.0s Steady Hold $\to$ 6.0s Slow Exhale (curling smoke billows), with visually lowered guide ring.
   - **Interactive Physics**: Crushable capsules, interactive ash-tapping, and blind box rerolls.
 - **🪐 Gravity Stars**: 120-particle gravitation vortex; drag on canvas to steer celestial orbits and trigger Solfeggio pentatonic chime chords.
-- **🎪 Cyber Street Arts (Blind Box Edition)**:
+- **🎪 Street Busking (Blind Box Edition)**:
   - 9 multi-stage talents: Cyber Erhu (Moon Reflect 2077), Solo Guitar, Holo Jazz Sax, 5-Ball Matrix, Plasma Staff, Bowl Kick, Breaking, Matrix Dodger, and Glowstick Otagei.
   - Forward Kinematics (FK) skeletal animation engine with afterimages.
   - Pure Web Audio synthesizer (coin landing, distortion harmonics, arpeggios, and sub-bass).
@@ -170,7 +170,7 @@ chrono_routine/
 │   │   ├── FocusTab/           # Deep focus, 4-7-8 breathing, soundscapes
 │   │   │   ├── MindOasis.tsx        # Mind Oasis container & smooth slider
 │   │   │   ├── CyberSmokeLuxury.tsx # Cyber Smoke zero-text edition
-│   │   │   └── CyberBuskingGame.tsx # Cyber Street Arts stickman stage
+│   │   │   └── CyberBuskingGame.tsx # Street Busking stickman stage
 │   │   ├── HabitsTab/          # Maintenance habits & 7-day matrix
 │   │   └── StatsTab/           # Daily Delivery Index & report export
 │   ├── i18n/

@@ -315,10 +315,10 @@ export const MindOasis: React.FC = () => {
   };
 
   const GAME_TABS: Array<{ id: OasisMode; icon: string; label: string; isPending: boolean }> = [
-    { id: 'muyu', icon: '🪵', label: language === 'zh' ? '赛博木鱼' : 'Cyber Muyu', isPending: false },
+    { id: 'muyu', icon: '🪵', label: language === 'zh' ? '转运木鱼' : 'Lucky Muyu', isPending: false },
     { id: 'smoke', icon: '🚬', label: language === 'zh' ? '赛博小烟' : 'Cyber Smoke', isPending: false },
     { id: 'gravity', icon: '🪐', label: language === 'zh' ? '引力星辰' : 'Gravity Stars', isPending: false },
-    { id: 'busking', icon: '🎪', label: language === 'zh' ? '赛博街艺' : 'Cyber Street Arts', isPending: false },
+    { id: 'busking', icon: '🎪', label: language === 'zh' ? '街艺打赏' : 'Street Busking', isPending: false },
     { id: 'cat', icon: '🐱', label: language === 'zh' ? '云端撸猫' : 'Pet Cat', isPending: true },
     { id: 'dog', icon: '🐕', label: language === 'zh' ? '草地遛狗' : 'Walk Dog', isPending: true },
   ];
@@ -403,7 +403,7 @@ export const MindOasis: React.FC = () => {
       </div>
 
       {/* ============================================================== */}
-      {/* GAME 1: 赛博木鱼 (Cyber Wooden Fish)                           */}
+      {/* GAME 1: 转运木鱼 (Lucky Muyu)                                  */}
       {/* ============================================================== */}
       {activeMode === 'muyu' && (
         <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center relative overflow-hidden min-h-[380px]">
@@ -667,7 +667,7 @@ export const MindOasis: React.FC = () => {
       )}
 
       {/* ============================================================== */}
-      {/* GAME 4: 赛博街艺 (Cyber Street Arts)                           */}
+      {/* GAME 4: 街艺打赏 (Street Busking)                              */}
       {/* ============================================================== */}
       {activeMode === 'busking' && (
         <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center relative overflow-hidden">

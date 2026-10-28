@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   Briefcase, 
   HeartPulse, 
@@ -7,14 +7,11 @@ import {
   Moon, 
   Clock, 
   Check, 
-  Play, 
   Trash2, 
-  Repeat,
-  MoreVertical,
+  Pencil,
   GraduationCap
 } from 'lucide-react';
 import { ScheduleItem, Category, Priority } from '../../types';
-import { useClickOutside } from '../../hooks/useClickOutside';
 import { HapticsService } from '../../services/haptics';
 import { useLanguage } from '../../i18n/LanguageContext';
 
@@ -22,7 +19,7 @@ interface TaskItemCardProps {
   task: ScheduleItem;
   isCompleted: boolean;
   onToggleComplete: () => void;
-  onStartFocus: (task: ScheduleItem) => void;
+  onStartFocus?: (task: ScheduleItem) => void;
   onEditTask: (task: ScheduleItem) => void;
   onDeleteTask: (id: string) => void;
 }
@@ -46,13 +43,10 @@ export const TaskItemCard: React.FC<TaskItemCardProps> = ({
   task,
   isCompleted,
   onToggleComplete,
-  onStartFocus,
   onEditTask,
   onDeleteTask,
 }) => {
   const { language, t } = useLanguage();
-  const [showMenu, setShowMenu] = useState(false);
-  const menuRef = useClickOutside<HTMLDivElement>(() => setShowMenu(false));
 
   const cat = CATEGORY_CONFIG[task.category] || CATEGORY_CONFIG.research;
   const CatIcon = cat.icon;
@@ -102,12 +96,6 @@ export const TaskItemCard: React.FC<TaskItemCardProps> = ({
             >
               {taskTitle}
             </span>
-
-            {task.repeat !== 'none' && (
-              <span title={t('repeat')} className="text-slate-400 dark:text-slate-500 shrink-0">
-                <Repeat className="w-3 h-3" />
-              </span>
-            )}
           </div>
 
           {/* Time & tags */}
@@ -147,61 +135,33 @@ export const TaskItemCard: React.FC<TaskItemCardProps> = ({
           )}
         </div>
 
-        {/* Action icons */}
-        <div className="flex items-center space-x-0.5 shrink-0">
-          {!isCompleted && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                HapticsService.light();
-                onStartFocus(task);
-              }}
-              title={t('startFocusPulse')}
-              className="p-1 rounded-lg text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-950/50 transition active:scale-95"
-            >
-              <Play className="w-3.5 h-3.5 fill-current" />
-            </button>
-          )}
+        {/* Action buttons: Edit & Delete */}
+        <div className="flex items-center space-x-1 shrink-0 self-center">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              HapticsService.light();
+              onEditTask(task);
+            }}
+            title={t('editTask')}
+            className="p-1.5 rounded-xl text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition active:scale-95"
+          >
+            <Pencil className="w-3.5 h-3.5" />
+          </button>
 
-          {/* Menu button with click-outside protection */}
-          <div className="relative" ref={menuRef}>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowMenu(!showMenu);
-              }}
-              className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-            >
-              <MoreVertical className="w-3.5 h-3.5" />
-            </button>
-
-            {showMenu && (
-              <div 
-                className="absolute right-0 mt-1 w-28 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-30 py-1"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  onClick={() => {
-                    setShowMenu(false);
-                    onEditTask(task);
-                  }}
-                  className="w-full text-left px-3 py-1.5 text-xs text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
-                >
-                  {t('editTask')}
-                </button>
-                <button
-                  onClick={() => {
-                    setShowMenu(false);
-                    onDeleteTask(task.id);
-                  }}
-                  className="w-full text-left px-3 py-1.5 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-950/50 flex items-center space-x-1"
-                >
-                  <Trash2 className="w-3 h-3" />
-                  <span>{t('deleteTask')}</span>
-                </button>
-              </div>
-            )}
-          </div>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              HapticsService.light();
+              onDeleteTask(task.id);
+            }}
+            title={t('deleteTask')}
+            className="p-1.5 rounded-xl text-slate-400 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition active:scale-95"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
     </div>

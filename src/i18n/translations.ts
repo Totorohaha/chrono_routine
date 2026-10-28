@@ -73,12 +73,12 @@ export const translations = {
 
     // Mind Oasis (心神解压工坊)
     oasisTitle: '心神解压工坊',
-    gameMuyu: '🪵 赛博木鱼',
+    gameMuyu: '🪵 转运木鱼',
     gameSmoke: '🚬 赛博小烟',
     gameBubble: '🫧 压力气泡消解',
     gameGravity: '🪐 引力星辰',
     gameBreathing: '🍃 心率共振呼吸',
-    muyuTitle: '赛博木鱼',
+    muyuTitle: '转运木鱼',
     meritLabel: '今日累计功德',
     meritDefaultText: '功德 +1',
     meritHair: '头发 +1',
@@ -110,12 +110,12 @@ export const translations = {
     clearCanvas: '重置星轨',
 
     // 3 In-Dev Mini-Games
-    gameBusking: '🎪 赛博街艺',
+    gameBusking: '🎪 街艺打赏',
     gameCat: '🐱 撸猫',
     gameDog: '🐕 遛狗',
     underDevBadge: '🚧 待开发',
     underDevNotice: '功能研发中 · 敬请期待',
-    buskingTitle: '赛博街艺',
+    buskingTitle: '街艺打赏',
     buskingProgress: '研发进度 45%',
     buskingActionToss: '投掷虚拟金币 🪙',
     buskingCheer: '🪙 金币 +1！感谢支持！',
@@ -436,12 +436,12 @@ export const translations = {
 
     // Mind Oasis (心神解压工坊)
     oasisTitle: 'Mind Oasis',
-    gameMuyu: '🪵 Cyber Muyu',
+    gameMuyu: '🪵 Lucky Muyu',
     gameSmoke: '🚬 Cyber Chill',
     gameBubble: '🫧 Bubble Pop',
     gameGravity: '🪐 Gravity Stars',
     gameBreathing: '🍃 Coherence Breath',
-    muyuTitle: 'Cyber Muyu',
+    muyuTitle: 'Lucky Muyu',
     meritLabel: 'Merit Accumulated Today',
     meritDefaultText: 'Merit +1',
     meritHair: 'Hair +1',
@@ -473,12 +473,12 @@ export const translations = {
     clearCanvas: 'Reset Orbit',
 
     // 3 In-Dev Mini-Games
-    gameBusking: '🎪 Cyber Street Arts',
+    gameBusking: '🎪 Street Busking',
     gameCat: '🐱 Pet Cat',
     gameDog: '🐕 Walk Dog',
     underDevBadge: '🚧 In Dev',
     underDevNotice: 'Under Development · Coming Soon',
-    buskingTitle: 'Cyber Street Arts',
+    buskingTitle: 'Street Busking',
     buskingProgress: 'Progress: 45%',
     buskingActionToss: 'Toss Virtual Coin 🪙',
     buskingCheer: '🪙 Coin +1! Thank you!',
