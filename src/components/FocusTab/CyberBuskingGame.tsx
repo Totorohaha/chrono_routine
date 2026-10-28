@@ -757,15 +757,15 @@ export const CyberBuskingGame: React.FC = () => {
       canvasRef.current.width = Math.floor(s.viewWidth * dpr);
       canvasRef.current.height = Math.floor(s.viewHeight * dpr);
 
-      // Move ground down so high jumps, unicycle bowl stack, and acrobatic props never exceed the frame
-      s.groundY = s.viewHeight - 52;
+      // Shift stage up by ~1/6 of viewHeight as requested
+      s.groundY = s.viewHeight - 52 - Math.round(s.viewHeight / 6);
       s.stageCenterX = s.viewWidth * 0.5;
 
       const availableHeadroom = s.groundY - 58;
       const targetStickmanPx = availableHeadroom * 0.44;
       const heightScale = targetStickmanPx / 172;
       const widthScale = s.viewWidth / 270;
-      s.cameraScale = clamp(Math.min(heightScale, widthScale), 1.05, 1.45);
+      s.cameraScale = clamp(Math.min(heightScale, widthScale), 0.95, 1.35);
     };
 
     resize();

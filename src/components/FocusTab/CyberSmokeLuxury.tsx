@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { RotateCcw, Volume2, VolumeX, Flame } from 'lucide-react';
+import { RotateCcw, Flame } from 'lucide-react';
 import { HapticsService } from '../../services/haptics';
 import { useLanguage } from '../../i18n/LanguageContext';
 
@@ -2944,25 +2944,6 @@ export const CyberSmokeLuxury: React.FC = () => {
         {/* Top Floating Action HUD */}
         <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-20 pointer-events-none">
           <div className="flex items-center space-x-1.5 pointer-events-auto">
-            {/* Crush Capsule Button */}
-            {showCapsuleBtn && (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  crushNextCapsule();
-                }}
-                className="px-2.5 py-1.5 rounded-xl bg-teal-950/80 hover:bg-teal-900/90 active:scale-95 text-teal-300 border border-teal-500/40 backdrop-blur-md text-[11px] font-mono font-bold flex items-center space-x-1 transition shadow-lg"
-              >
-                <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
-                <span>
-                  {capsulesCrushed >= currentPack.capsuleCount
-                    ? (language === 'zh' ? `爆珠已破 (${currentPack.capsuleCount}/${currentPack.capsuleCount})` : `Capsules Crushed (${currentPack.capsuleCount})`)
-                    : (language === 'zh' ? `捏破爆珠 (${capsulesCrushed}/${currentPack.capsuleCount})` : `Crush Capsule (${capsulesCrushed}/${currentPack.capsuleCount})`)}
-                </span>
-              </button>
-            )}
-
             {/* Tap Ash Button */}
             {showTapAsh && (
               <button
@@ -2979,24 +2960,8 @@ export const CyberSmokeLuxury: React.FC = () => {
             )}
           </div>
 
-          {/* Right Top HUD: Sound Toggle & Randomize Blind Box */}
+          {/* Right Top HUD: Randomize Blind Box */}
           <div className="flex items-center space-x-1.5 pointer-events-auto">
-            <button
-              type="button"
-              onClick={handleToggleSound}
-              title={isMuted ? (language === 'zh' ? '开启音效' : 'Unmute') : (language === 'zh' ? '静音' : 'Mute')}
-              className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 border border-cyan-500/30 backdrop-blur-md text-[11px] font-mono font-medium flex items-center space-x-1 transition active:scale-95 shadow-md"
-            >
-              {isMuted ? (
-                <VolumeX className="w-3.5 h-3.5 text-rose-400" />
-              ) : (
-                <Volume2 className="w-3.5 h-3.5 text-cyan-400" />
-              )}
-              <span className="hidden sm:inline">
-                {isMuted ? (language === 'zh' ? '已静音' : 'Muted') : (language === 'zh' ? '物理音效' : 'Audio')}
-              </span>
-            </button>
-
             <button
               type="button"
               onClick={handleRandomize}

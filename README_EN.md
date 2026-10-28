@@ -94,7 +94,7 @@ flowchart TD
         G1["🪵 Cyber Muyu<br/>Haptic Knocking · Merit +1 · Auto Knock"]
         G2["🚬 Cyber Smoke<br/>Zero-Text Luxury Edition · 4-4-6 Respiration · Capsules · Tap Ash"]
         G3["🪐 Gravity Stars<br/>120-Particle Gravitational Vortex · Pentatonic Chimes"]
-        G4["🎪 Cyber Busker<br/>9 Multi-Stage Talents · FK Skeleton Kinematics · WebAudio Synth"]
+        G4["🎪 Cyber Street Arts<br/>9 Multi-Stage Talents · FK Skeleton Kinematics · WebAudio Synth"]
         G5["🐱 Cloud Pet Cat<br/>Napping Kitten · Soothing Touch (In Dev)"]
         G6["🐕 Grassland Walk Dog<br/>Playful Pup · Frisbee Toss (In Dev)"]
         Sound["🎧 Offline Soundscapes<br/>Natural Rain · Deep Ocean · Forest Stream"]
@@ -111,11 +111,11 @@ flowchart TD
   - **Standardized 4-4-6 Respiration Cycle**: 4.0s Deep Inhale (glowing cherry ember heating up) $\to$ 4.0s Steady Hold $\to$ 6.0s Slow Exhale (curling smoke billows), with visually lowered guide ring.
   - **Interactive Physics**: Crushable capsules, interactive ash-tapping, and blind box rerolls.
 - **🪐 Gravity Stars**: 120-particle gravitation vortex; drag on canvas to steer celestial orbits and trigger Solfeggio pentatonic chime chords.
-- **🎪 Cyber Busker (Blind Box Edition)**:
+- **🎪 Cyber Street Arts (Blind Box Edition)**:
   - 9 multi-stage talents: Cyber Erhu (Moon Reflect 2077), Solo Guitar, Holo Jazz Sax, 5-Ball Matrix, Plasma Staff, Bowl Kick, Breaking, Matrix Dodger, and Glowstick Otagei.
   - Forward Kinematics (FK) skeletal animation engine with afterimages.
   - Pure Web Audio synthesizer (coin landing, distortion harmonics, arpeggios, and sub-bass).
-  - Stage lowered to prevent actions from clipping outside top bounds.
+  - Stage elevated by 1/6th screen height for comfortable viewing headroom.
 - **🐱 Cloud Pet Cat & 🐕 Grassland Walk Dog**: Lightweight interactive companion modules (under active development).
 - **🎧 Offline Ambient Soundscapes**: Rain on glass, deep ocean waves, and forest stream. Real-time procedural digital synthesis via Web Audio API—100% offline with zero data consumption.
 
@@ -170,7 +170,7 @@ chrono_routine/
 │   │   ├── FocusTab/           # Deep focus, 4-7-8 breathing, soundscapes
 │   │   │   ├── MindOasis.tsx        # Mind Oasis container & smooth slider
 │   │   │   ├── CyberSmokeLuxury.tsx # Cyber Smoke zero-text edition
-│   │   │   └── CyberBuskingGame.tsx # Cyber Busker stickman stage
+│   │   │   └── CyberBuskingGame.tsx # Cyber Street Arts stickman stage
 │   │   ├── HabitsTab/          # Maintenance habits & 7-day matrix
 │   │   └── StatsTab/           # Daily Delivery Index & report export
 │   ├── i18n/

@@ -110,12 +110,12 @@ export const translations = {
     clearCanvas: '重置星轨',
 
     // 3 In-Dev Mini-Games
-    gameBusking: '🎪 作者卖艺',
+    gameBusking: '🎪 赛博街艺',
     gameCat: '🐱 撸猫',
     gameDog: '🐕 遛狗',
     underDevBadge: '🚧 待开发',
     underDevNotice: '功能研发中 · 敬请期待',
-    buskingTitle: '作者卖艺',
+    buskingTitle: '赛博街艺',
     buskingProgress: '研发进度 45%',
     buskingActionToss: '投掷虚拟金币 🪙',
     buskingCheer: '🪙 金币 +1！感谢支持！',
@@ -473,12 +473,12 @@ export const translations = {
     clearCanvas: 'Reset Orbit',
 
     // 3 In-Dev Mini-Games
-    gameBusking: '🎪 Busking',
+    gameBusking: '🎪 Cyber Street Arts',
     gameCat: '🐱 Pet Cat',
     gameDog: '🐕 Walk Dog',
     underDevBadge: '🚧 In Dev',
     underDevNotice: 'Under Development · Coming Soon',
-    buskingTitle: 'Cyber Busker',
+    buskingTitle: 'Cyber Street Arts',
     buskingProgress: 'Progress: 45%',
     buskingActionToss: 'Toss Virtual Coin 🪙',
     buskingCheer: '🪙 Coin +1! Thank you!',
