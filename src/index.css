@@ -84,3 +84,133 @@ html, body {
 .animate-fade-out-up {
   animation: fade-out-up 1.0s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ==========================================================================
+   3D 赛博木鱼 (Lucky Muyu 3D) 主题与动效样式
+   ========================================================================== */
+.muyu-theme-zen {
+  --bg-top: #1a0b07;
+  --bg-mid: #32140c;
+  --bg-bot: #0c0402;
+  --accent: #f59e0b;
+  --accent-soft: rgba(245, 158, 11, 0.22);
+  --accent-glow: rgba(245, 158, 11, 0.6);
+  --text-main: #fffbeb;
+  --glass-bg: rgba(28, 13, 8, 0.76);
+  --glass-border: rgba(245, 158, 11, 0.3);
+}
+
+.muyu-theme-cyber {
+  --bg-top: #0c1118;
+  --bg-mid: #1c2636;
+  --bg-bot: #06080c;
+  --accent: #f59e0b;
+  --accent-soft: rgba(245, 158, 11, 0.22);
+  --accent-glow: rgba(245, 158, 11, 0.65);
+  --text-main: #fef3c7;
+  --glass-bg: rgba(15, 21, 31, 0.82);
+  --glass-border: rgba(245, 158, 11, 0.4);
+}
+
+.muyu-theme-cat {
+  --bg-top: #261019;
+  --bg-mid: #471d2e;
+  --bg-bot: #14070d;
+  --accent: #ff85a1;
+  --accent-soft: rgba(255, 133, 161, 0.25);
+  --accent-glow: rgba(255, 133, 161, 0.6);
+  --text-main: #fff0f5;
+  --glass-bg: rgba(46, 18, 30, 0.76);
+  --glass-border: rgba(255, 133, 161, 0.36);
+}
+
+.muyu-card-bg {
+  background: radial-gradient(circle at 50% 44%, var(--bg-mid) 0%, var(--bg-top) 56%, var(--bg-bot) 100%);
+  color: var(--text-main);
+  transition: background 0.55s ease, color 0.4s ease;
+}
+
+.serif-cn { font-family: 'Noto Serif SC', serif; }
+.mono-num { font-family: 'JetBrains Mono', monospace; }
+
+/* 毛玻璃面板 */
+.muyu-glass-panel {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.72), inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
+  transition: border-color 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* 祈福飘字动画 */
+@keyframes meritFloatUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 16px) scale(0.55) rotate(var(--rot, 0deg));
+  }
+  16% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--dx, 0px) * 0.25), -14px) scale(1.14) rotate(var(--rot, 0deg));
+  }
+  78% {
+    opacity: 0.96;
+    transform: translate(calc(-50% + var(--dx, 0px)), -86px) scale(1.0) rotate(var(--rot, 0deg));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx, 0px) * 1.15), -124px) scale(0.88) rotate(var(--rot, 0deg));
+  }
+}
+
+.merit-float-text {
+  position: absolute;
+  pointer-events: none;
+  white-space: nowrap;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  z-index: 40;
+  animation: meritFloatUp 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.78), 0 0 22px var(--accent-glow);
+}
+
+/* 飘出星星与主题粒子动画 */
+@keyframes sparkBurst {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.35) rotate(0deg);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--tx) * 0.45), calc(-50% + var(--ty) * 0.45)) scale(1.18) rotate(calc(var(--r) * 0.45));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty) + 24px)) scale(0.25) rotate(var(--r));
+  }
+}
+
+.spark-particle {
+  position: absolute;
+  pointer-events: none;
+  z-index: 35;
+  animation: sparkBurst 0.88s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* 按钮选中高亮 */
+.skin-btn-active {
+  border-color: var(--accent) !important;
+  background: linear-gradient(135deg, var(--accent-soft), rgba(255, 255, 255, 0.08)) !important;
+  box-shadow: 0 0 24px -4px var(--accent-glow), inset 0 1px 0 0 rgba(255, 255, 255, 0.28) !important;
+}
+
+/* 赛博全息底座旋转环 */
+@keyframes slowSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.holo-spin {
+  transform-origin: 0px 0px;
+  animation: slowSpin 18s linear infinite;
+}
