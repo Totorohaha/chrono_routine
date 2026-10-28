@@ -2459,17 +2459,12 @@ export const CyberBuskingGame: React.FC = () => {
           </button>
         </div>
 
-        {/* Bottom Breathing Tap Prompt */}
-        <div className="absolute bottom-3 left-4 right-4 flex justify-between items-center pointer-events-none z-20 font-mono">
-          <div className="px-3.5 py-1.5 rounded-full bg-slate-950/85 backdrop-blur-md border border-cyan-500/25 flex items-center space-x-1.5 text-xs text-amber-300 shadow-md">
+        {/* Bottom Centered Coins Display */}
+        <div className="absolute bottom-3 left-0 right-0 flex justify-center items-center pointer-events-none z-20 font-mono">
+          <div className="px-4 py-1.5 rounded-full bg-slate-950/85 backdrop-blur-md border border-amber-500/30 flex items-center space-x-2 text-xs sm:text-sm text-amber-300 shadow-lg">
             <Coins className="w-4 h-4 text-amber-400" />
             <span>{language === 'zh' ? '总打赏' : 'Coins'}:</span>
-            <span className="font-bold">{coinsCollected}</span>
-          </div>
-
-          <div className="px-3.5 py-1.5 rounded-full bg-slate-950/85 backdrop-blur-md border border-cyan-500/25 flex items-center space-x-1.5 text-xs text-cyan-200 animate-pulse shadow-md">
-            <span>👇</span>
-            <span>{language === 'zh' ? '点击屏幕任意处 · 投币开演' : 'Tap anywhere to toss coin & start'}</span>
+            <span className="font-bold text-amber-400 font-mono">{coinsCollected}</span>
           </div>
         </div>
       </div>
