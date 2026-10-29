@@ -73,3 +73,18 @@ export interface RoutineTemplate {
   tasks: (Omit<ScheduleItem, 'id' | 'date' | 'completed' | 'completedDates'> & { titleEn?: string; noteEn?: string })[];
   habits: (Omit<HabitItem, 'id' | 'history' | 'streak' | 'createdAt'> & { titleEn?: string; subtitleEn?: string; unitEn?: string })[];
 }
+
+export type TransactionType = 'expense' | 'income';
+
+export interface TransactionItem {
+  id: string;
+  type: TransactionType;
+  amount: number;
+  category: string;
+  categoryLabel?: string;
+  categoryLabelEn?: string;
+  date: string; // YYYY-MM-DD
+  note: string;
+  createdAt: string; // ISO
+}
+

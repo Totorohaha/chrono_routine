@@ -7,7 +7,8 @@ import {
   HabitItem, 
   FocusRecord, 
   RoutineTemplate,
-  Category
+  Category,
+  TransactionItem
 } from './types';
 import { getTodayStr, parseLocalDate, formatDate } from './utils/date';
 import { Header } from './components/Header';
@@ -18,6 +19,8 @@ import { TaskListView } from './components/ScheduleTab/TaskListView';
 import { TaskModal } from './components/ScheduleTab/TaskModal';
 import { HabitCard } from './components/HabitsTab/HabitCard';
 import { HabitModal } from './components/HabitsTab/HabitModal';
+import { FinanceTab } from './components/FinanceTab/FinanceTab';
+import { TransactionModal } from './components/FinanceTab/TransactionModal';
 import { MindOasis } from './components/FocusTab/MindOasis';
 import { StatsOverview } from './components/StatsTab/StatsOverview';
 import { TemplateLibraryModal } from './components/SettingsTab/TemplateLibraryModal';
@@ -54,6 +57,7 @@ const AppContent: React.FC = () => {
   const [tasks, setTasks] = useState<ScheduleItem[]>([]);
   const [habits, setHabits] = useState<HabitItem[]>([]);
   const [focusRecords, setFocusRecords] = useState<FocusRecord[]>([]);
+  const [transactions, setTransactions] = useState<TransactionItem[]>([]);
 
   // Modals state
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
@@ -61,6 +65,9 @@ const AppContent: React.FC = () => {
 
   const [isHabitModalOpen, setIsHabitModalOpen] = useState(false);
   const [editingHabit, setEditingHabit] = useState<HabitItem | null>(null);
+
+  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState<TransactionItem | null>(null);
 
   const [isTemplatesOpen, setIsTemplatesOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -74,6 +81,7 @@ const AppContent: React.FC = () => {
     setTasks(StorageService.getSchedules());
     setHabits(StorageService.getHabits());
     setFocusRecords(StorageService.getFocusRecords());
+    setTransactions(StorageService.getTransactions());
   };
 
   useEffect(() => {
@@ -100,6 +108,11 @@ const AppContent: React.FC = () => {
             setEditingHabit(null);
             return;
           }
+          if (isTransactionModalOpen) {
+            setIsTransactionModalOpen(false);
+            setEditingTransaction(null);
+            return;
+          }
           if (isTemplatesOpen) {
             setIsTemplatesOpen(false);
             return;
@@ -123,7 +136,7 @@ const AppContent: React.FC = () => {
     return () => {
       if (removeListener) removeListener();
     };
-  }, [isAIImportOpen, isTaskModalOpen, isHabitModalOpen, isTemplatesOpen, isSettingsOpen, activeTab]);
+  }, [isAIImportOpen, isTaskModalOpen, isHabitModalOpen, isTransactionModalOpen, isTemplatesOpen, isSettingsOpen, activeTab]);
 
   // Sync dark mode class to html element
   useEffect(() => {
@@ -465,11 +478,68 @@ const AppContent: React.FC = () => {
     StorageService.saveSchedules(updatedTasks);
   };
 
+  // Transaction Handlers
+  const handleSaveTransaction = (data: {
+    id?: string;
+    type: 'expense' | 'income';
+    amount: number;
+    category: string;
+    categoryLabel: string;
+    categoryLabelEn: string;
+    date: string;
+    note: string;
+  }) => {
+    let updated: TransactionItem[];
+    if (data.id) {
+      updated = transactions.map((tx) =>
+        tx.id === data.id
+          ? {
+              ...tx,
+              type: data.type,
+              amount: data.amount,
+              category: data.category,
+              categoryLabel: data.categoryLabel,
+              categoryLabelEn: data.categoryLabelEn,
+              date: data.date,
+              note: data.note,
+            }
+          : tx
+      );
+    } else {
+      const newTx: TransactionItem = {
+        id: `tx-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        type: data.type,
+        amount: data.amount,
+        category: data.category,
+        categoryLabel: data.categoryLabel,
+        categoryLabelEn: data.categoryLabelEn,
+        date: data.date,
+        note: data.note,
+        createdAt: new Date().toISOString(),
+      };
+      updated = [newTx, ...transactions];
+    }
+    setTransactions(updated);
+    StorageService.saveTransactions(updated);
+    soundManager.playChime();
+    showToast(t('saveTransSuccess'), 'success');
+  };
+
+  const handleDeleteTransaction = (id: string) => {
+    const updated = transactions.filter((t) => t.id !== id);
+    setTransactions(updated);
+    StorageService.saveTransactions(updated);
+    showToast(t('deleteSuccess'), 'info');
+  };
+
   const handleQuickAdd = () => {
     HapticsService.light();
     if (activeTab === 'habits') {
       setEditingHabit(null);
       setIsHabitModalOpen(true);
+    } else if (activeTab === 'finance') {
+      setEditingTransaction(null);
+      setIsTransactionModalOpen(true);
     } else {
       setEditingTask(null);
       setIsTaskModalOpen(true);
@@ -508,7 +578,7 @@ const AppContent: React.FC = () => {
         {/* Dynamic View Content */}
         <div className="flex-1 overflow-hidden relative flex flex-col">
           {/* Schedule Tab */}
-          <div className={`flex-1 flex-col overflow-hidden min-h-0 ${activeTab === 'schedule' ? 'flex' : 'hidden'}`}>
+          <div className={`flex-1 flex-col overflow-hidden min-h-0 relative ${activeTab === 'schedule' ? 'flex' : 'hidden'}`}>
             {/* Pinned Top Navigation & Filtering Controls (Fixed Aspect & Stability) */}
             <div className="shrink-0 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800/80 z-10 shadow-xs">
               <WeekCalendar
@@ -519,7 +589,7 @@ const AppContent: React.FC = () => {
 
               {/* Search, AI Import & Category Filter Pills */}
               <div className="px-3.5 pt-2 pb-1 space-y-2">
-                {/* Search Bar + AI Import Pill */}
+                {/* Search Bar + AI Import Pill + New Task Button */}
                 <div className="flex items-center space-x-2">
                   <div className="relative flex-1 flex items-center">
                     <Search className="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" />
@@ -551,6 +621,20 @@ const AppContent: React.FC = () => {
                   >
                     <Bot className="w-4 h-4" />
                     <span>{t('aiImport')}</span>
+                  </button>
+
+                  {/* New Task Button */}
+                  <button
+                    onClick={() => {
+                      HapticsService.light();
+                      setEditingTask(null);
+                      setIsTaskModalOpen(true);
+                    }}
+                    title={t('newTaskBtn')}
+                    className="shrink-0 px-3 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs sm:text-sm font-semibold shadow-xs transition active:scale-95 flex items-center space-x-1"
+                  >
+                    <Plus className="w-4 h-4 stroke-[2.5]" />
+                    <span className="hidden sm:inline">{t('newTaskBtn')}</span>
                   </button>
                 </div>
 
@@ -662,6 +746,21 @@ const AppContent: React.FC = () => {
                 />
               )}
             </div>
+
+            {/* Floating Quick Add FAB in Bottom-Right of Schedule Tab */}
+            <div className="absolute bottom-4 right-4 z-20">
+              <button
+                onClick={() => {
+                  HapticsService.light();
+                  setEditingTask(null);
+                  setIsTaskModalOpen(true);
+                }}
+                title={t('newTaskBtn')}
+                className="w-12 h-12 rounded-full bg-gradient-to-tr from-teal-600 via-emerald-500 to-indigo-600 text-white flex items-center justify-center shadow-lg shadow-teal-500/35 hover:scale-105 active:scale-95 transition-transform"
+              >
+                <Plus className="w-6 h-6 stroke-[2.5]" />
+              </button>
+            </div>
           </div>
 
           {/* Habits Tab */}
@@ -704,6 +803,23 @@ const AppContent: React.FC = () => {
                 />
               ))}
             </div>
+          </div>
+
+          {/* Finance Tab (Daily Bookkeeping) */}
+          <div className={`flex-1 flex-col min-h-0 relative ${activeTab === 'finance' ? 'flex' : 'hidden'}`}>
+            <FinanceTab
+              transactions={transactions}
+              onAddTransaction={() => {
+                setEditingTransaction(null);
+                setIsTransactionModalOpen(true);
+              }}
+              onEditTransaction={(item) => {
+                setEditingTransaction(item);
+                setIsTransactionModalOpen(true);
+              }}
+              onDeleteTransaction={handleDeleteTransaction}
+              selectedCalendarDate={selectedDate}
+            />
           </div>
 
           {/* Mind Oasis (Relaxation Mini-Games) Tab */}
@@ -751,6 +867,18 @@ const AppContent: React.FC = () => {
           }}
           onSave={handleSaveHabit}
           initialHabit={editingHabit}
+        />
+
+        <TransactionModal
+          isOpen={isTransactionModalOpen}
+          onClose={() => {
+            setIsTransactionModalOpen(false);
+            setEditingTransaction(null);
+          }}
+          onSave={handleSaveTransaction}
+          onDelete={handleDeleteTransaction}
+          initialData={editingTransaction}
+          defaultDate={selectedDate}
         />
 
         <TemplateLibraryModal

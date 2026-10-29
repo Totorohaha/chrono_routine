@@ -1,4 +1,4 @@
-import { ScheduleItem, HabitItem, FocusRecord, DayReflection } from '../types';
+import { ScheduleItem, HabitItem, FocusRecord, DayReflection, TransactionItem } from '../types';
 import { getTodayStr, formatDate, parseLocalDate } from '../utils/date';
 
 export { getTodayStr, formatDate, parseLocalDate };
@@ -8,6 +8,7 @@ const STORAGE_KEYS = {
   HABITS: 'pulseflow_habits_v5',
   FOCUS_RECORDS: 'pulseflow_focus_records_v5',
   REFLECTIONS: 'pulseflow_reflections_v5',
+  TRANSACTIONS: 'pulseflow_transactions_v5',
   DARK_MODE: 'pulseflow_dark_mode',
 };
 
@@ -281,11 +282,24 @@ export const StorageService = {
     localStorage.setItem(STORAGE_KEYS.REFLECTIONS, JSON.stringify(reflections));
   },
 
+  getTransactions: (): TransactionItem[] => {
+    try {
+      const data = localStorage.getItem(STORAGE_KEYS.TRANSACTIONS);
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  },
+
+  saveTransactions: (transactions: TransactionItem[]) => {
+    localStorage.setItem(STORAGE_KEYS.TRANSACTIONS, JSON.stringify(transactions));
+  },
+
   clearAllData: () => {
     // Purge both v5 and legacy keys to guarantee a 100% clean slate
     const keysToPurge = [
-      'pulseflow_schedules_v5', 'pulseflow_habits_v5', 'pulseflow_focus_records_v5', 'pulseflow_reflections_v5',
-      'pulseflow_schedules_v4', 'pulseflow_habits_v4', 'pulseflow_focus_records_v4', 'pulseflow_reflections_v4'
+      'pulseflow_schedules_v5', 'pulseflow_habits_v5', 'pulseflow_focus_records_v5', 'pulseflow_reflections_v5', 'pulseflow_transactions_v5',
+      'pulseflow_schedules_v4', 'pulseflow_habits_v4', 'pulseflow_focus_records_v4', 'pulseflow_reflections_v4', 'pulseflow_transactions_v4'
     ];
     keysToPurge.forEach((k) => localStorage.removeItem(k));
   },

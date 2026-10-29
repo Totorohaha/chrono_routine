@@ -43,12 +43,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
   const handleExportData = () => {
     const backup = {
-      version: '4.0-pulseflow',
+      version: '5.0-pulseflow',
       exportDate: new Date().toISOString(),
       schedules: tasks,
       habits: habits,
       focusRecords: focusRecords,
       reflections: StorageService.getReflections(),
+      transactions: StorageService.getTransactions(),
     };
 
     const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
@@ -74,6 +75,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         if (json.focusRecords) StorageService.saveFocusRecords(json.focusRecords);
         if (json.reflections) {
           StorageService.saveAllReflections(json.reflections);
+        }
+        if (json.transactions) {
+          StorageService.saveTransactions(json.transactions);
         }
         showToast(t('restoreSuccessMsg'), 'success');
         onDataRestored();

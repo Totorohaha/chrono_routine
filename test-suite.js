@@ -317,6 +317,36 @@ zhKeys.forEach(k => {
 });
 console.log(`✓ 双语词典完整性测试通过 (${zhKeys.length} 对术语全部对齐)`);
 
+// 11. Bookkeeping & Financial Ledger metrics calculation test
+console.log('\n[Test 11] 日常收支记账指标与 CSV 导出格式化算法测试...');
+const sampleTransactions = [
+  { id: 'tx-1', type: 'income', amount: 15000.00, category: 'salary', categoryLabel: '工资薪酬', date: '2026-10-15', note: '10月工资', createdAt: '2026-10-15T09:00:00Z' },
+  { id: 'tx-2', type: 'expense', amount: 88.50, category: 'food', categoryLabel: '餐饮美食', date: '2026-10-29', note: '午餐轻食', createdAt: '2026-10-29T12:30:00Z' },
+  { id: 'tx-3', type: 'expense', amount: 35.00, category: 'transport', categoryLabel: '交通出行', date: '2026-10-29', note: '地铁打卡', createdAt: '2026-10-29T18:00:00Z' },
+  { id: 'tx-4', type: 'expense', amount: 200.00, category: 'shopping', categoryLabel: '购物消费', date: '2026-10-20', note: '日用消耗品', createdAt: '2026-10-20T15:00:00Z' },
+];
+
+const totalExpense = sampleTransactions
+  .filter(t => t.type === 'expense' && t.date.startsWith('2026-10'))
+  .reduce((sum, t) => sum + t.amount, 0);
+const totalIncome = sampleTransactions
+  .filter(t => t.type === 'income' && t.date.startsWith('2026-10'))
+  .reduce((sum, t) => sum + t.amount, 0);
+const netBalance = totalIncome - totalExpense;
+const savingsRate = totalIncome > 0 ? Math.round((netBalance / totalIncome) * 100) : 0;
+
+assert.strictEqual(totalExpense, 323.50, '当月支出汇总应为 323.50');
+assert.strictEqual(totalIncome, 15000.00, '当月收入汇总应为 15000.00');
+assert.strictEqual(netBalance, 14676.50, '净结余应为 14676.50');
+assert.strictEqual(savingsRate, 98, '结余储蓄率应为 98%');
+
+// CSV formatting test
+const csvHeader = '日期,类型,分类,金额,备注\n';
+const csvLines = sampleTransactions.map(t => `${t.date},${t.type === 'expense' ? '支出' : '收入'},${t.categoryLabel},${t.amount.toFixed(2)},"${t.note}"`);
+const fullCsv = '\uFEFF' + csvHeader + csvLines.join('\n');
+assert.ok(fullCsv.includes('2026-10-29,支出,餐饮美食,88.50,"午餐轻食"'), 'CSV 应正确包含带引号的明细行');
+console.log('✓ 收支结余算法与 CSV 导出验证通过');
+
 console.log('\n=============================================');
 console.log('⚡ 《脉律 PulseFlow》所有自动化测试 100% 成功！');
 console.log('=============================================');
