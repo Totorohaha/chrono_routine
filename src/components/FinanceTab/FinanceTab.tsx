@@ -8,12 +8,10 @@ import {
   Search,
   ChevronLeft,
   ChevronRight,
-  Calendar,
-  Layers,
+  CalendarCheck,
   PieChart,
   Trash2,
-  Edit2,
-  CalendarCheck,
+  X,
 } from 'lucide-react';
 import { TransactionItem } from '../../types';
 import { useLanguage } from '../../i18n/LanguageContext';
@@ -251,19 +249,19 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
 
   return (
     <div className="flex-1 flex flex-col min-h-0 relative select-none">
-      {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-3.5 py-2.5 space-y-3.5 stable-scroll pb-20">
-        {/* Month Selector & CSV Action */}
+      {/* Scrollable Content with Safe Bottom Padding */}
+      <div className="flex-1 overflow-y-auto px-3.5 py-2.5 space-y-3 stable-scroll pb-8">
+        {/* Month Selector & Action Bar */}
         <div className="flex items-center justify-between bg-white dark:bg-slate-900/90 rounded-2xl p-2 border border-slate-200/80 dark:border-slate-800 shadow-xs">
-          <div className="flex items-center space-x-1.5">
+          <div className="flex items-center space-x-1 shrink-0">
             <button
               onClick={handlePrevMonth}
               title={t('prevMonth')}
               className="p-1.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition active:scale-95"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="text-sm font-bold font-mono text-slate-800 dark:text-slate-100 px-1">
+            <span className="text-sm font-bold font-mono text-slate-800 dark:text-slate-100 px-0.5">
               {monthDisplayLabel}
             </span>
             <button
@@ -271,19 +269,19 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
               title={t('nextMonth')}
               className="p-1.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition active:scale-95"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4" />
             </button>
             {selectedMonth !== todayStr.slice(0, 7) && (
               <button
                 onClick={handleResetToCurrentMonth}
-                className="text-[11px] font-semibold text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/40 px-2 py-0.5 rounded-lg hover:underline transition"
+                className="text-[11px] font-semibold text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/40 px-1.5 py-0.5 rounded-lg hover:underline transition shrink-0"
               >
                 {t('currentMonth')}
               </button>
             )}
           </div>
 
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1 shrink-0">
             {/* Sync with calendar date toggle */}
             <button
               onClick={() => {
@@ -291,14 +289,14 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
                 setSyncWithCalendarDate(!syncWithCalendarDate);
               }}
               title={syncWithCalendarDate ? t('viewAllMonth') : t('filterBySelectedDate')}
-              className={`px-2 py-1 rounded-xl text-xs font-medium flex items-center space-x-1 transition active:scale-95 ${
+              className={`px-2 py-1 rounded-xl text-xs font-semibold flex items-center space-x-1 transition active:scale-95 shrink-0 ${
                 syncWithCalendarDate
                   ? 'bg-teal-600 text-white shadow-xs'
                   : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
               }`}
             >
               <CalendarCheck className="w-3.5 h-3.5" />
-              <span className="text-[11px] font-mono">
+              <span className="text-[11px] font-mono whitespace-nowrap">
                 {syncWithCalendarDate ? selectedCalendarDate.slice(5) : t('filterBySelectedDate')}
               </span>
             </button>
@@ -307,7 +305,7 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
             <button
               onClick={handleExportCSV}
               title={t('exportCSV')}
-              className="p-1.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition active:scale-95"
+              className="p-1.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition active:scale-95 shrink-0"
             >
               <Download className="w-4 h-4" />
             </button>
@@ -315,54 +313,57 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
         </div>
 
         {/* Dashboard Financial Summary Card */}
-        <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 text-white rounded-3xl p-4.5 shadow-xl border border-teal-500/20 relative overflow-hidden">
+        <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 text-white rounded-3xl p-4 shadow-xl border border-teal-500/20 relative overflow-hidden">
           {/* Subtle Background Glow */}
           <div className="absolute -right-8 -bottom-8 w-44 h-44 rounded-full bg-teal-500/10 blur-2xl pointer-events-none" />
           <div className="absolute -left-8 -top-8 w-40 h-40 rounded-full bg-rose-500/10 blur-2xl pointer-events-none" />
 
           {/* Top Row: Total Expense & Quick Today Pill */}
-          <div className="flex items-start justify-between relative z-10 mb-3">
-            <div>
+          <div className="flex items-center justify-between relative z-10 mb-3 gap-2">
+            <div className="min-w-0 flex-1">
               <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center space-x-1">
-                <TrendingDown className="w-3.5 h-3.5 text-rose-400" />
-                <span>{t('monthExpense')}</span>
+                <TrendingDown className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                <span className="truncate">{t('monthExpense')}</span>
               </span>
-              <div className="text-2xl sm:text-3xl font-extrabold font-mono tracking-tight text-white mt-0.5">
+              <div className="text-2xl sm:text-3xl font-extrabold font-mono tracking-tight text-white mt-0.5 truncate">
                 <span className="text-lg text-slate-400 mr-1 font-bold">¥</span>
                 {totalExpense.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </div>
             </div>
 
-            <div className="text-right">
-              <span className="text-[11px] text-teal-300/90 font-medium bg-teal-900/60 border border-teal-500/30 px-2 py-0.5 rounded-full inline-block">
-                {t('todayExpense')}: ¥{todayExpense.toFixed(2)}
+            <div className="text-right shrink-0 bg-teal-950/70 border border-teal-500/30 px-2.5 py-1 rounded-2xl">
+              <span className="text-[10px] text-teal-300/80 font-medium block leading-tight">
+                {t('todayExpense')}
+              </span>
+              <span className="text-xs font-bold font-mono text-teal-300 block leading-tight mt-0.5">
+                ¥{todayExpense.toFixed(2)}
               </span>
             </div>
           </div>
 
           {/* Bottom Row: Income & Net Balance */}
           <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-700/60 relative z-10">
-            <div>
-              <span className="text-[11px] font-medium text-slate-400 flex items-center space-x-1">
-                <TrendingUp className="w-3 h-3 text-emerald-400" />
-                <span>{t('monthIncome')}</span>
+            <div className="min-w-0">
+              <span className="text-[11px] font-medium text-slate-400 flex items-center space-x-1 truncate">
+                <TrendingUp className="w-3 h-3 text-emerald-400 shrink-0" />
+                <span className="truncate">{t('monthIncome')}</span>
               </span>
-              <div className="text-sm font-bold font-mono text-emerald-400 mt-0.5">
+              <div className="text-sm sm:text-base font-bold font-mono text-emerald-400 mt-0.5 truncate">
                 ¥{totalIncome.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </div>
             </div>
 
-            <div>
-              <span className="text-[11px] font-medium text-slate-400 flex items-center space-x-1 justify-between">
-                <span>{t('monthBalance')}</span>
+            <div className="min-w-0">
+              <span className="text-[11px] font-medium text-slate-400 flex items-center space-x-1.5 truncate">
+                <span className="truncate">{t('monthBalance')}</span>
                 {totalIncome > 0 && (
-                  <span className="text-[10px] text-teal-300 font-mono">
-                    {savingsRate}% {t('savingsRate')}
+                  <span className="text-[10px] text-teal-300 font-mono bg-teal-900/60 px-1 py-0.2 rounded shrink-0">
+                    {savingsRate}%
                   </span>
                 )}
               </span>
               <div
-                className={`text-sm font-bold font-mono mt-0.5 ${
+                className={`text-sm sm:text-base font-bold font-mono mt-0.5 truncate ${
                   netBalance >= 0 ? 'text-teal-300' : 'text-rose-400'
                 }`}
               >
@@ -395,7 +396,7 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
               className="w-full flex items-center justify-between text-left text-xs font-bold text-slate-700 dark:text-slate-200 mb-2"
             >
               <div className="flex items-center space-x-1.5">
-                <PieChart className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                <PieChart className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0" />
                 <span>{t('categoryBreakdown')}</span>
               </div>
               <span className="text-[11px] text-slate-400 dark:text-slate-500 font-mono">
@@ -408,11 +409,11 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
                 {categoryBreakdownList.slice(0, 5).map((item) => (
                   <div key={item.catId} className="space-y-1">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="flex items-center space-x-1.5 text-slate-700 dark:text-slate-300 font-medium">
-                        <span>{item.option.icon}</span>
-                        <span>{t(item.option.labelKey as any)}</span>
+                      <span className="flex items-center space-x-1.5 text-slate-700 dark:text-slate-300 font-medium min-w-0 pr-2">
+                        <span className="shrink-0">{item.option.icon}</span>
+                        <span className="truncate">{t(item.option.labelKey as any)}</span>
                       </span>
-                      <span className="font-mono text-slate-600 dark:text-slate-400">
+                      <span className="font-mono text-slate-600 dark:text-slate-400 shrink-0">
                         <span className="text-[11px] text-slate-400 dark:text-slate-500 mr-1.5">
                           {item.percentage.toFixed(1)}%
                         </span>
@@ -439,27 +440,36 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
         )}
 
         {/* Search & Filter Toolbar */}
-        <div className="space-y-2 pt-1">
-          <div className="flex items-center space-x-2">
-            <div className="relative flex-1">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="text"
-                placeholder={t('searchTransPlaceholder')}
-                value={searchKeyword}
-                onChange={(e) => setSearchKeyword(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-hidden focus:ring-1 focus:ring-teal-500 text-slate-800 dark:text-slate-200 transition"
-              />
-            </div>
+        <div className="space-y-2 pt-0.5">
+          {/* Full-width Search Bar with Clear Button */}
+          <div className="relative flex items-center">
+            <Search className="w-4 h-4 absolute left-3 text-slate-400 pointer-events-none" />
+            <input
+              type="text"
+              placeholder={t('searchTransPlaceholder')}
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+              className="w-full pl-9 pr-8 py-2 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-hidden focus:ring-1 focus:ring-teal-500 text-slate-800 dark:text-slate-200 transition"
+            />
+            {searchKeyword && (
+              <button
+                onClick={() => setSearchKeyword('')}
+                className="absolute right-2.5 text-slate-400 hover:text-slate-600 p-0.5 rounded-full"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
 
-            {/* Type Filter Buttons */}
+          {/* Type Filter Buttons and Records Count */}
+          <div className="flex items-center justify-between px-0.5">
             <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-xl border border-slate-200/60 dark:border-slate-700/60 shrink-0">
               <button
                 onClick={() => {
                   HapticsService.selection();
                   setFilterType('all');
                 }}
-                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
+                className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
                   filterType === 'all'
                     ? 'bg-white dark:bg-slate-900 text-teal-600 shadow-xs'
                     : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'
@@ -472,7 +482,7 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
                   HapticsService.selection();
                   setFilterType('expense');
                 }}
-                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
+                className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
                   filterType === 'expense'
                     ? 'bg-rose-500 text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'
@@ -485,7 +495,7 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
                   HapticsService.selection();
                   setFilterType('income');
                 }}
-                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
+                className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
                   filterType === 'income'
                     ? 'bg-emerald-500 text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-700 dark:text-slate-400'
@@ -494,26 +504,19 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
                 {t('filterIncOnly')}
               </button>
             </div>
-          </div>
 
-          <div className="flex items-center justify-between px-1">
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 font-mono">
-              {t('transactionList')} ({filteredTransactions.length} {t('totalRecords')})
-            </span>
-            {searchKeyword.trim() && (
-              <button
-                onClick={() => setSearchKeyword('')}
-                className="text-xs text-teal-600 dark:text-teal-400 hover:underline"
-              >
-                {t('resetFilter')}
-              </button>
-            )}
+            <div className="flex items-center space-x-1.5 text-xs text-slate-500 dark:text-slate-400 font-mono">
+              <span className="font-semibold">{t('transactionList')}</span>
+              <span className="text-teal-700 dark:text-teal-300 font-bold bg-teal-50 dark:bg-teal-950/40 px-2 py-0.5 rounded-full text-[11px]">
+                {filteredTransactions.length} {t('totalRecords')}
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Transactions List Grouped by Date */}
         {Object.keys(groupedTransactions).length === 0 ? (
-          <div className="py-12 flex flex-col items-center justify-center text-center p-6 bg-white dark:bg-slate-900/60 rounded-3xl border border-dashed border-slate-200 dark:border-slate-800">
+          <div className="py-10 flex flex-col items-center justify-center text-center p-6 bg-white dark:bg-slate-900/60 rounded-3xl border border-dashed border-slate-200 dark:border-slate-800">
             <div className="w-14 h-14 rounded-2xl bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400 flex items-center justify-center text-2xl mb-3 shadow-inner">
               🪙
             </div>
@@ -531,20 +534,20 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
             </button>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3.5">
             {Object.entries(groupedTransactions).map(([dateStr, group]) => (
               <div key={dateStr} className="space-y-1.5">
                 {/* Date Header with Daily Subtotal */}
                 <div className="flex items-center justify-between px-1 text-xs text-slate-500 dark:text-slate-400">
-                  <span className="font-semibold font-mono">{formatDateHeader(dateStr)}</span>
-                  <div className="space-x-2 font-mono text-[11px]">
+                  <span className="font-semibold font-mono truncate pr-2">{formatDateHeader(dateStr)}</span>
+                  <div className="space-x-2 font-mono text-[11px] shrink-0">
                     {group.dayExpense > 0 && (
-                      <span className="text-rose-600 dark:text-rose-400">
+                      <span className="text-rose-600 dark:text-rose-400 font-medium">
                         支 ¥{group.dayExpense.toFixed(2)}
                       </span>
                     )}
                     {group.dayIncome > 0 && (
-                      <span className="text-emerald-600 dark:text-emerald-400">
+                      <span className="text-emerald-600 dark:text-emerald-400 font-medium">
                         收 ¥{group.dayIncome.toFixed(2)}
                       </span>
                     )}
@@ -567,25 +570,25 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
                         className="flex items-center justify-between p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition cursor-pointer group"
                       >
                         {/* Left: Icon & Note/Category */}
-                        <div className="flex items-center space-x-3 min-w-0 pr-2">
+                        <div className="flex items-center space-x-3 min-w-0 flex-1 pr-3">
                           <div
                             className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0 ${meta.bgLight} ${meta.bgDark}`}
                           >
                             {meta.icon}
                           </div>
-                          <div className="min-w-0">
+                          <div className="min-w-0 flex-1">
                             <div className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
                               {item.note || t(meta.labelKey as any)}
                             </div>
-                            <div className="text-[11px] text-slate-400 dark:text-slate-500 flex items-center space-x-1.5">
-                              <span>{t(meta.labelKey as any)}</span>
-                              {item.note && <span className="text-slate-300 dark:text-slate-600">·</span>}
-                              {item.note && <span className="truncate max-w-[140px]">{item.note}</span>}
+                            <div className="text-[11px] text-slate-400 dark:text-slate-500 flex items-center space-x-1.5 truncate">
+                              <span className="shrink-0">{t(meta.labelKey as any)}</span>
+                              {item.note && <span className="text-slate-300 dark:text-slate-600 shrink-0">·</span>}
+                              {item.note && <span className="truncate">{item.note}</span>}
                             </div>
                           </div>
                         </div>
 
-                        {/* Right: Amount & Quick Actions */}
+                        {/* Right: Amount & Quick Delete */}
                         <div className="flex items-center space-x-2 shrink-0">
                           <div
                             className={`text-sm font-bold font-mono tracking-tight ${
@@ -602,7 +605,7 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
                                 onDeleteTransaction(item.id);
                               }
                             }}
-                            className="opacity-0 group-hover:opacity-100 p-1 text-slate-300 hover:text-rose-500 transition rounded-lg"
+                            className="p-1 text-slate-400 hover:text-rose-500 transition rounded-lg"
                             title={t('deleteTransBtn')}
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -616,20 +619,6 @@ export const FinanceTab: React.FC<FinanceTabProps> = ({
             ))}
           </div>
         )}
-      </div>
-
-      {/* Floating Add FAB in Bottom-Right */}
-      <div className="absolute bottom-4 right-4 z-20">
-        <button
-          onClick={() => {
-            HapticsService.medium();
-            onAddTransaction();
-          }}
-          title={t('addTransactionBtn')}
-          className="w-12 h-12 rounded-full bg-gradient-to-tr from-teal-600 via-emerald-500 to-indigo-600 text-white flex items-center justify-center shadow-lg shadow-teal-500/35 hover:scale-105 active:scale-95 transition-transform"
-        >
-          <Plus className="w-6 h-6 stroke-[2.5]" />
-        </button>
       </div>
     </div>
   );

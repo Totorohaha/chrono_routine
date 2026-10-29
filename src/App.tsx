@@ -716,8 +716,8 @@ const AppContent: React.FC = () => {
               </div>
             </div>
 
-            {/* Schedule Body with Gutter Stabilization */}
-            <div className="flex-1 overflow-y-auto min-h-0 stable-scroll">
+            {/* Schedule Body with Gutter Stabilization & FAB Clearance */}
+            <div className="flex-1 overflow-y-auto min-h-0 stable-scroll pb-16">
               {scheduleViewMode === 'timeline' ? (
                 <TimelineView
                   tasks={filteredTasks}

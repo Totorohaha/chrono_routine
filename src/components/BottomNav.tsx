@@ -35,7 +35,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           }`}
         >
           <Calendar className="w-5 h-5 mb-0.5" />
-          <span className="text-[11px] font-medium truncate max-w-[64px]">{t('navSchedule')}</span>
+          <span className="text-[11px] font-medium truncate w-full text-center px-0.5">{t('navSchedule')}</span>
         </button>
 
         {/* Maintenance / Habits */}
@@ -48,7 +48,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           }`}
         >
           <Zap className="w-5 h-5 mb-0.5" />
-          <span className="text-[11px] font-medium truncate max-w-[64px]">{t('navHabits')}</span>
+          <span className="text-[11px] font-medium truncate w-full text-center px-0.5">{t('navHabits')}</span>
         </button>
 
         {/* Bookkeeping / Finance */}
@@ -61,7 +61,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           }`}
         >
           <Wallet className="w-5 h-5 mb-0.5" />
-          <span className="text-[11px] font-medium truncate max-w-[64px]">{t('navFinance')}</span>
+          <span className="text-[11px] font-medium truncate w-full text-center px-0.5">{t('navFinance')}</span>
         </button>
 
         {/* Brain Fog / Focus */}
@@ -74,7 +74,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           }`}
         >
           <Wind className="w-5 h-5 mb-0.5" />
-          <span className="text-[11px] font-medium truncate max-w-[64px]">{t('navFocus')}</span>
+          <span className="text-[11px] font-medium truncate w-full text-center px-0.5">{t('navFocus')}</span>
         </button>
 
         {/* Energy Analytics */}
@@ -87,7 +87,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           }`}
         >
           <BarChart3 className="w-5 h-5 mb-0.5" />
-          <span className="text-[11px] font-medium truncate max-w-[64px]">{t('navStats')}</span>
+          <span className="text-[11px] font-medium truncate w-full text-center px-0.5">{t('navStats')}</span>
         </button>
       </div>
     </nav>

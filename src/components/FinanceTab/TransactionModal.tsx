@@ -156,7 +156,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full shadow-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full shadow-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="flex items-center justify-between px-5 pt-4 pb-2 border-b border-slate-100 dark:border-slate-800/80 shrink-0">
           <div className="flex items-center space-x-2">
@@ -176,7 +176,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
         </div>
 
         {/* Scrollable Form Content */}
-        <form onSubmit={handleSave} className="flex-1 overflow-y-auto px-5 py-4 space-y-4 stable-scroll">
+        <form onSubmit={handleSave} className="flex-1 overflow-y-auto px-5 py-4 space-y-4 stable-scroll min-h-0">
           {/* Expense / Income Switcher */}
           <div className="grid grid-cols-2 p-1 bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
             <button
@@ -255,7 +255,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
               <Tag className="w-3.5 h-3.5 text-teal-500" />
               <span>{t('transCategoryLabel')}</span>
             </label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {currentCategories.map((cat) => {
                 const isSelected = selectedCatId === cat.id;
                 return (
@@ -266,14 +266,16 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                       HapticsService.selection();
                       setSelectedCatId(cat.id);
                     }}
-                    className={`flex items-center space-x-2 p-2 rounded-xl border text-left transition-all active:scale-95 ${
+                    className={`flex flex-col items-center justify-center py-2.5 px-1.5 rounded-2xl border text-center transition-all active:scale-95 ${
                       isSelected
-                        ? 'border-teal-500 bg-teal-50/80 dark:bg-teal-950/40 text-teal-700 dark:text-teal-300 font-bold shadow-xs ring-1 ring-teal-500/40'
+                        ? 'border-teal-500 bg-teal-50/90 dark:bg-teal-950/40 text-teal-700 dark:text-teal-300 font-bold shadow-xs ring-1 ring-teal-500/40'
                         : 'border-slate-200/70 dark:border-slate-700/60 bg-slate-50/60 dark:bg-slate-800/40 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                     }`}
                   >
-                    <span className="text-base shrink-0">{cat.icon}</span>
-                    <span className="text-xs truncate">{t(cat.labelKey as any)}</span>
+                    <span className="text-2xl mb-1 shrink-0">{cat.icon}</span>
+                    <span className="text-xs font-semibold leading-tight w-full text-center truncate px-0.5">
+                      {t(cat.labelKey as any)}
+                    </span>
                   </button>
                 );
               })}
