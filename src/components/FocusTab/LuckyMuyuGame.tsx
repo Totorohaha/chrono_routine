@@ -708,7 +708,7 @@ export const LuckyMuyuGame: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className={`w-full rounded-3xl overflow-hidden p-4 sm:p-5 flex flex-col items-center relative select-none transition-colors duration-500 muyu-card-bg ${currentConfig.themeClass} border border-amber-500/25 shadow-2xl`}
+      className={`w-full rounded-3xl overflow-hidden p-4 sm:p-5 flex flex-col items-center justify-between relative select-none transition-colors duration-500 muyu-card-bg ${currentConfig.themeClass} border border-amber-500/25 shadow-2xl min-h-[510px] sm:min-h-[548px]`}
     >
       {/* Top Header Bar */}
       <div className="w-full flex items-center justify-between z-20 mb-1">
@@ -767,7 +767,7 @@ export const LuckyMuyuGame: React.FC = () => {
       {/* Main Interactive 3D Vector Stage */}
       <div
         onClick={() => triggerKnock(true)}
-        className="relative w-full max-w-[580px] aspect-[800/620] flex items-center justify-center cursor-pointer select-none my-1"
+        className="relative flex-1 w-full max-w-[580px] aspect-[800/620] max-h-[350px] sm:max-h-[380px] flex items-center justify-center cursor-pointer select-none my-auto"
       >
         {/* Floating text & spark particles DOM container */}
         <div ref={particleLayerRef} className="absolute inset-0 pointer-events-none overflow-visible z-30" />

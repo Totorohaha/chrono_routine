@@ -25,7 +25,7 @@ type OasisMode = 'muyu' | 'smoke' | 'gravity' | 'busking' | 'cat' | 'dog';
 export const MindOasis: React.FC = () => {
   const { language, t } = useLanguage();
   const { showToast } = useToast();
-  const [activeMode, setActiveMode] = useState<OasisMode>('muyu');
+  const [activeMode, setActiveMode] = useState<OasisMode>('smoke');
   const [ambientSound, setAmbientSound] = useState<'rain' | 'waves' | 'stream' | 'none'>('none');
 
   // ==========================================
@@ -48,19 +48,19 @@ export const MindOasis: React.FC = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const width = (canvas.width = canvas.offsetWidth || 340);
-    const height = (canvas.height = canvas.offsetHeight || 300);
+    const height = (canvas.height = canvas.offsetHeight || 450);
 
-    const colors = ['#38bdf8', '#34d399', '#a78bfa', '#f472b6', '#f59e0b', '#2dd4bf'];
+    const colors = ['#38bdf8', '#34d399', '#a78bfa', '#f472b6', '#f59e0b', '#2dd4bf', '#60a5fa'];
     const particles = [];
-    for (let i = 0; i < 110; i++) {
+    for (let i = 0; i < 180; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 1.0,
-        vy: (Math.random() - 0.5) * 1.0,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: (Math.random() - 0.5) * 1.2,
         radius: 1.5 + Math.random() * 2.5,
         color: colors[Math.floor(Math.random() * colors.length)],
-        alpha: 0.3 + Math.random() * 0.6,
+        alpha: 0.35 + Math.random() * 0.55,
       });
     }
     particlesRef.current = particles;
@@ -76,6 +76,7 @@ export const MindOasis: React.FC = () => {
     if (!ctx) return;
 
     let chimeThrottle = 0;
+    let pulseAngle = 0;
 
     const animate = () => {
       const width = canvas.width;
@@ -89,16 +90,37 @@ export const MindOasis: React.FC = () => {
       const my = mouseRef.current.y;
       const isDown = mouseRef.current.isDown;
 
-      particlesRef.current.forEach((p, idx) => {
+      // Draw subtle orbital ripple at gravity source
+      if (isDown) {
+        pulseAngle = (pulseAngle + 0.05) % (Math.PI * 2);
+        const pulseR = 36 + Math.sin(pulseAngle) * 8;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(mx, my, pulseR, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(167, 139, 250, 0.35)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 6]);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(mx, my, 6, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = '#a78bfa';
+        ctx.fill();
+        ctx.restore();
+      }
+
+      particlesRef.current.forEach((p) => {
         // Gravitational attraction to finger/cursor
         if (isDown) {
           const dx = mx - p.x;
           const dy = my - p.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 200 && dist > 8) {
-            const force = 32 / dist;
-            p.vx += (dx / dist) * force * 0.12;
-            p.vy += (dy / dist) * force * 0.12;
+          if (dist < 260 && dist > 10) {
+            const force = 38 / dist;
+            p.vx += (dx / dist) * force * 0.14;
+            p.vy += (dy / dist) * force * 0.14;
           }
         }
 
@@ -200,10 +222,10 @@ export const MindOasis: React.FC = () => {
   };
 
   const GAME_TABS: Array<{ id: OasisMode; icon: string; label: string; isPending: boolean }> = [
-    { id: 'muyu', icon: '🪵', label: language === 'zh' ? '转运木鱼' : 'Lucky Muyu', isPending: false },
     { id: 'smoke', icon: '🚬', label: language === 'zh' ? '赛博小烟' : 'Cyber Smoke', isPending: false },
-    { id: 'gravity', icon: '🪐', label: language === 'zh' ? '引力星辰' : 'Gravity Stars', isPending: false },
     { id: 'busking', icon: '🎪', label: language === 'zh' ? '街艺打赏' : 'Street Busking', isPending: false },
+    { id: 'gravity', icon: '🪐', label: language === 'zh' ? '引力星辰' : 'Gravity Stars', isPending: false },
+    { id: 'muyu', icon: '🪵', label: language === 'zh' ? '转运木鱼' : 'Lucky Muyu', isPending: false },
     { id: 'cat', icon: '🐱', label: language === 'zh' ? '云端撸猫' : 'Pet Cat', isPending: true },
     { id: 'dog', icon: '🐕', label: language === 'zh' ? '草地遛狗' : 'Walk Dog', isPending: true },
   ];
@@ -288,14 +310,7 @@ export const MindOasis: React.FC = () => {
       </div>
 
       {/* ============================================================== */}
-      {/* GAME 1: 转运木鱼 (Lucky Muyu 3D)                                */}
-      {/* ============================================================== */}
-      {activeMode === 'muyu' && (
-        <LuckyMuyuGame />
-      )}
-
-      {/* ============================================================== */}
-      {/* GAME 2: 赛博小烟 (Cyber Smoke)                                  */}
+      {/* GAME 1: 赛博小烟 (Cyber Smoke Luxury Edition)                   */}
       {/* ============================================================== */}
       {activeMode === 'smoke' && (
         <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center relative overflow-hidden">
@@ -306,6 +321,21 @@ export const MindOasis: React.FC = () => {
           </div>
 
           <CyberSmokeLuxury />
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* GAME 2: 街艺打赏 (Street Busking)                              */}
+      {/* ============================================================== */}
+      {activeMode === 'busking' && (
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center relative overflow-hidden">
+          <div className="w-full flex items-center justify-between mb-2 z-10">
+            <span className="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono">
+              {t('buskingTitle')}
+            </span>
+          </div>
+
+          <CyberBuskingGame />
         </div>
       )}
 
@@ -330,7 +360,13 @@ export const MindOasis: React.FC = () => {
             </button>
           </div>
 
-          <div className="relative w-full h-[280px] rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 cursor-crosshair">
+          <div className="relative w-full h-[450px] sm:h-[480px] rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 cursor-crosshair select-none shadow-inner">
+            {/* Top cosmic badge */}
+            <div className="absolute top-3 left-3 text-[10px] font-mono text-cyan-400/80 bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-cyan-500/30 flex items-center space-x-1.5 pointer-events-none z-10">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+              <span>COSMIC ORBIT · 万有引力</span>
+            </div>
+
             <canvas
               ref={canvasRef}
               className="w-full h-full"
@@ -358,33 +394,27 @@ export const MindOasis: React.FC = () => {
               }}
               onTouchEnd={() => { mouseRef.current.isDown = false; }}
             />
-            <div className="absolute bottom-2 left-3 text-[10px] text-slate-500 pointer-events-none font-mono">
-              ✦ {language === 'zh' ? '在画布上滑动手指，引导发光星辰漩涡' : 'Drag on canvas to guide star vortex'}
+
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 text-[11px] font-mono text-slate-300/80 bg-slate-900/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-700/60 pointer-events-none flex items-center space-x-1.5 shadow-lg whitespace-nowrap z-10">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span>{language === 'zh' ? '在画布上按住并滑动，聚拢发光星系漩涡' : 'Hold and drag on canvas to weave galactic vortex'}</span>
             </div>
           </div>
         </div>
       )}
 
       {/* ============================================================== */}
-      {/* GAME 4: 街艺打赏 (Street Busking)                              */}
+      {/* GAME 4: 转运木鱼 (Lucky Muyu 3D)                                */}
       {/* ============================================================== */}
-      {activeMode === 'busking' && (
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center relative overflow-hidden">
-          <div className="w-full flex items-center justify-between mb-2 z-10">
-            <span className="text-sm font-bold text-slate-700 dark:text-slate-200 font-mono">
-              {t('buskingTitle')}
-            </span>
-          </div>
-
-          <CyberBuskingGame />
-        </div>
+      {activeMode === 'muyu' && (
+        <LuckyMuyuGame />
       )}
 
       {/* ============================================================== */}
       {/* GAME 5: 云端撸猫 (Pet Cat - 待开发)                             */}
       {/* ============================================================== */}
       {activeMode === 'cat' && (
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center relative overflow-hidden min-h-[380px]">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center relative overflow-hidden min-h-[510px] sm:min-h-[548px]">
           {/* Header Bar */}
           <div className="w-full flex items-center justify-between z-10 mb-2">
             <span className="text-xs font-bold text-slate-700 dark:text-slate-200 font-mono flex items-center space-x-1">
@@ -396,8 +426,8 @@ export const MindOasis: React.FC = () => {
             </span>
           </div>
 
-          {/* Dedicated 280px Cyber Chamber Viewport */}
-          <div className="relative w-full h-[280px] rounded-2xl overflow-hidden bg-slate-950 border border-slate-800/90 flex flex-col items-center justify-between p-4 select-none shadow-inner">
+          {/* Unified 400px/430px Cyber Chamber Viewport */}
+          <div className="relative w-full h-[400px] sm:h-[430px] rounded-2xl overflow-hidden bg-slate-950 border border-slate-800/90 flex flex-col items-center justify-between p-4 select-none shadow-inner">
             {/* Top Chamber Bar */}
             <div className="w-full flex items-center justify-between text-[10px] font-mono text-slate-400 z-10">
               <span className="flex items-center space-x-1">
@@ -412,7 +442,7 @@ export const MindOasis: React.FC = () => {
             {/* Center Stage Cat Illustration */}
             <div className="relative flex flex-col items-center justify-center my-auto">
               {/* Purr Sound Wave Resonance Ring */}
-              <div className={`absolute w-36 h-36 rounded-full border border-rose-500/30 transition-all duration-700 pointer-events-none ${
+              <div className={`absolute w-44 h-44 rounded-full border border-rose-500/30 transition-all duration-700 pointer-events-none ${
                 isPettingCat ? 'scale-125 opacity-100 animate-ping' : 'scale-90 opacity-20'
               }`} />
 
@@ -421,7 +451,7 @@ export const MindOasis: React.FC = () => {
                 onClick={handlePetCat}
                 className="relative cursor-pointer transition-transform duration-300 hover:scale-105 active:scale-95 py-1"
               >
-                <svg className="w-36 h-28 filter drop-shadow-xl" viewBox="0 0 160 120" fill="none">
+                <svg className="w-44 h-36 filter drop-shadow-xl" viewBox="0 0 160 120" fill="none">
                   <defs>
                     <linearGradient id="catBody" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" stopColor="#f472b6" />
@@ -510,7 +540,7 @@ export const MindOasis: React.FC = () => {
       {/* GAME 6: 草地遛狗 (Walk Dog - 待开发)                             */}
       {/* ============================================================== */}
       {activeMode === 'dog' && (
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center relative overflow-hidden min-h-[380px]">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center relative overflow-hidden min-h-[510px] sm:min-h-[548px]">
           {/* Header Bar */}
           <div className="w-full flex items-center justify-between z-10 mb-2">
             <span className="text-xs font-bold text-slate-700 dark:text-slate-200 font-mono flex items-center space-x-1">
@@ -522,8 +552,8 @@ export const MindOasis: React.FC = () => {
             </span>
           </div>
 
-          {/* Dedicated 280px Cyber Chamber Viewport */}
-          <div className="relative w-full h-[280px] rounded-2xl overflow-hidden bg-slate-950 border border-slate-800/90 flex flex-col items-center justify-between p-4 select-none shadow-inner">
+          {/* Unified 400px/430px Cyber Chamber Viewport */}
+          <div className="relative w-full h-[400px] sm:h-[430px] rounded-2xl overflow-hidden bg-slate-950 border border-slate-800/90 flex flex-col items-center justify-between p-4 select-none shadow-inner">
             {/* Top Chamber Bar */}
             <div className="w-full flex items-center justify-between text-[10px] font-mono text-slate-400 z-10">
               <span className="flex items-center space-x-1">
@@ -541,7 +571,7 @@ export const MindOasis: React.FC = () => {
                 onClick={handleThrowFrisbee}
                 className="relative cursor-pointer transition-transform duration-300 hover:scale-105 active:scale-95 py-1"
               >
-                <svg className="w-36 h-28 filter drop-shadow-xl" viewBox="0 0 160 120" fill="none">
+                <svg className="w-44 h-36 filter drop-shadow-xl" viewBox="0 0 160 120" fill="none">
                   <defs>
                     <linearGradient id="dogBody" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" stopColor="#f59e0b" />

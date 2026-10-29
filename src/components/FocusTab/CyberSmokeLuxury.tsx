@@ -1092,7 +1092,7 @@ export const CyberSmokeLuxury: React.FC = () => {
 
   const animFrameIdRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(performance.now());
-  const viewSizeRef = useRef({ width: 360, height: 420 });
+  const viewSizeRef = useRef({ width: 360, height: 450 });
 
   // Update prompt text and UI indicators
   const syncUiFromState = useCallback(() => {
@@ -1259,13 +1259,13 @@ export const CyberSmokeLuxury: React.FC = () => {
     const viewWidth = viewSizeRef.current.width;
     const viewHeight = viewSizeRef.current.height;
     const isPortrait = viewHeight > viewWidth;
-    const sceneScale = clamp(Math.min(viewWidth / 390, viewHeight / 440), 0.72, 1.08);
+    const sceneScale = clamp(Math.min(viewWidth / 390, viewHeight / 480), 0.75, 1.15);
     const totalLength = isPortrait
       ? Math.min(viewWidth * 0.58, 240 * sceneScale)
       : Math.min(viewWidth * 0.52, 280 * sceneScale);
     const filterLength = totalLength * 0.28;
     const centerX = viewWidth * 0.5 + s.cameraOffsetX;
-    const centerY = viewHeight * 0.56;
+    const centerY = viewHeight * 0.54;
     const rightEdgeX = centerX + totalLength * 0.46;
     const filterStartX = rightEdgeX - filterLength;
 
@@ -1307,7 +1307,7 @@ export const CyberSmokeLuxury: React.FC = () => {
     const viewWidth = viewSizeRef.current.width;
     const viewHeight = viewSizeRef.current.height;
     const isPortrait = viewHeight > viewWidth;
-    const sceneScale = clamp(Math.min(viewWidth / 390, viewHeight / 440), 0.72, 1.08);
+    const sceneScale = clamp(Math.min(viewWidth / 390, viewHeight / 480), 0.75, 1.15);
     const totalLength = isPortrait
       ? Math.min(viewWidth * 0.58, 240 * sceneScale)
       : Math.min(viewWidth * 0.52, 280 * sceneScale);
@@ -1315,7 +1315,7 @@ export const CyberSmokeLuxury: React.FC = () => {
     const filterLength = totalLength * 0.28;
     const maxPaperLength = totalLength - filterLength;
     const centerX = viewWidth * 0.5 + s.cameraOffsetX;
-    const centerY = viewHeight * 0.56;
+    const centerY = viewHeight * 0.54;
     const rightEdgeX = centerX + totalLength * 0.46;
     const filterStartX = rightEdgeX - filterLength;
     const currentPaperLength = maxPaperLength * (1 - s.burnProgress * 0.88);
@@ -1366,7 +1366,7 @@ export const CyberSmokeLuxury: React.FC = () => {
       if (!containerRef.current || !canvasRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      viewSizeRef.current = { width: rect.width || 360, height: rect.height || 420 };
+      viewSizeRef.current = { width: rect.width || 360, height: rect.height || 450 };
       canvasRef.current.width = Math.floor(viewSizeRef.current.width * dpr);
       canvasRef.current.height = Math.floor(viewSizeRef.current.height * dpr);
     };
@@ -1389,7 +1389,7 @@ export const CyberSmokeLuxury: React.FC = () => {
       const viewWidth = viewSizeRef.current.width;
       const viewHeight = viewSizeRef.current.height;
       const isPortrait = viewHeight > viewWidth;
-      const sceneScale = clamp(Math.min(viewWidth / 390, viewHeight / 440), 0.72, 1.08);
+      const sceneScale = clamp(Math.min(viewWidth / 390, viewHeight / 480), 0.75, 1.15);
 
       let desiredOffsetX = 10 * sceneScale;
       if (s.current === STATES.LIGHTING) {
@@ -1554,7 +1554,7 @@ export const CyberSmokeLuxury: React.FC = () => {
           const filterLength = totalLength * 0.28;
           const maxPaperLength = totalLength - filterLength;
           const centerX = viewWidth * 0.5 + s.cameraOffsetX;
-          const centerY = viewHeight * 0.56;
+          const centerY = viewHeight * 0.54;
           const rightEdgeX = centerX + totalLength * 0.46;
           const filterStartX = rightEdgeX - filterLength;
           const currentPaperLength = maxPaperLength * (1 - s.burnProgress * 0.88);
@@ -2875,14 +2875,14 @@ export const CyberSmokeLuxury: React.FC = () => {
         const viewWidth = viewSizeRef.current.width;
         const viewHeight = viewSizeRef.current.height;
         const isPortrait = viewHeight > viewWidth;
-        const sceneScale = clamp(Math.min(viewWidth / 390, viewHeight / 440), 0.72, 1.08);
+        const sceneScale = clamp(Math.min(viewWidth / 390, viewHeight / 480), 0.75, 1.15);
         const totalLength = isPortrait
           ? Math.min(viewWidth * 0.58, 240 * sceneScale)
           : Math.min(viewWidth * 0.52, 280 * sceneScale);
         const thickness = Math.round((isPortrait ? 18 : 20) * sceneScale);
         const filterLength = totalLength * 0.28;
         const centerX = viewWidth * 0.5 + s.cameraOffsetX;
-        const centerY = viewHeight * 0.56;
+        const centerY = viewHeight * 0.54;
         const rightEdgeX = centerX + totalLength * 0.46;
         const filterStartX = rightEdgeX - filterLength;
 
@@ -2932,7 +2932,7 @@ export const CyberSmokeLuxury: React.FC = () => {
       {/* Main Procedural Cyber Canvas Chamber */}
       <div
         ref={containerRef}
-        className="relative w-full h-[410px] sm:h-[440px] rounded-3xl overflow-hidden bg-[#04060b] border border-cyan-500/25 shadow-2xl flex items-center justify-center select-none"
+        className="relative w-full h-[450px] sm:h-[480px] rounded-3xl overflow-hidden bg-[#04060b] border border-cyan-500/25 shadow-2xl flex items-center justify-center select-none"
       >
         <canvas
           ref={canvasRef}
