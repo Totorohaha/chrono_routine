@@ -4,7 +4,6 @@ const config: CapacitorConfig = {
   appId: 'com.pulseflow.app',
   appName: '脉律',
   webDir: 'dist',
-  bundledWebRuntime: false,
   server: {
     androidScheme: 'https'
   }
