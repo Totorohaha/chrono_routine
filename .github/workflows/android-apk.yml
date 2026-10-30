@@ -66,7 +66,8 @@ jobs:
       - name: Rename APK Output
         run: |
           mkdir -p release-apk
-          cp android/app/build/outputs/apk/debug/app-debug.apk release-apk/PulseFlow-v1.0.0-debug.apk
+          find android -type f -name "*.apk" -exec cp {} release-apk/PulseFlow-v1.0.0-debug.apk \;
+          ls -la release-apk/
 
       - name: Upload APK as Workflow Artifact
         uses: actions/upload-artifact@v4
