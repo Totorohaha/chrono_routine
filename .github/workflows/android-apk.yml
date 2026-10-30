@@ -54,20 +54,12 @@ jobs:
       - name: Build Android Debug APK
         run: |
           cd android
-          ./gradlew assembleDebug --stacktrace 2>&1 | tee gradle-build.log
-
-      - name: Upload Build Log On Failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gradle-build-log
-          path: android/gradle-build.log
-
-      - name: Rename APK Output
-        run: |
-          mkdir -p release-apk
-          find android -type f -name "*.apk" -exec cp {} release-apk/PulseFlow-v1.0.0-debug.apk \;
-          ls -la release-apk/
+          ./gradlew :app:assembleDebug --stacktrace
+          echo "=== All files in android/app/build/outputs ==="
+          ls -la app/build/outputs/apk/debug/ || ls -R app/build/outputs/
+          mkdir -p ../release-apk
+          cp app/build/outputs/apk/debug/app-debug.apk ../release-apk/PulseFlow-v1.0.0-debug.apk
+          ls -la ../release-apk/
 
       - name: Upload APK as Workflow Artifact
         uses: actions/upload-artifact@v4
@@ -83,6 +75,7 @@ jobs:
         with:
           tag_name: v1.0.0
           name: PulseFlow v1.0.0 (Android APK)
+          make_latest: true
           body: |
             ## 📱 脉律 PulseFlow 安卓安装包
 
