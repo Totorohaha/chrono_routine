@@ -59,7 +59,12 @@ jobs:
       - name: Build Android Debug APK
         run: |
           cd android
-          ./gradlew :app:assembleDebug --stacktrace
+          if ! ./gradlew :app:assembleDebug --stacktrace > /tmp/gradle.log 2>&1; then
+            cat /tmp/gradle.log | tail -n 30
+            ERR_MSG=$(tail -n 15 /tmp/gradle.log | tr '\n' ' ')
+            echo "::error::$ERR_MSG"
+            exit 1
+          fi
           echo "=== All files in app/build/outputs ==="
           ls -la app/build/outputs/apk/debug/
           mkdir -p ../release-apk
