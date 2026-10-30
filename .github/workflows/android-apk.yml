@@ -54,7 +54,14 @@ jobs:
       - name: Build Android Debug APK
         run: |
           cd android
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew assembleDebug --stacktrace 2>&1 | tee gradle-build.log
+
+      - name: Upload Build Log On Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-build-log
+          path: android/gradle-build.log
 
       - name: Rename APK Output
         run: |
