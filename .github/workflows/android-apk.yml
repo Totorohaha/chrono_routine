@@ -54,7 +54,7 @@ jobs:
       - name: Build Android Debug APK
         run: |
           cd android
-          ./gradlew assembleDebug --stacktrace --info > build.log 2>&1 || (tail -n 100 build.log && exit 1)
+          ./gradlew assembleDebug --stacktrace
 
       - name: Rename APK Output
         run: |
