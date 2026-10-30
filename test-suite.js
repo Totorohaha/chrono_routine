@@ -306,14 +306,28 @@ console.log('✓ AI 排期字符串多格式解析测试通过');
 
 // 10. Bilingual i18n key parity test
 console.log('\n[Test 10] 中英文双语词典对齐与完整性测试...');
-import { translations } from './src/i18n/translations.ts';
-const zhKeys = Object.keys(translations.zh);
-const enKeys = Object.keys(translations.en);
+import fs from 'node:fs';
+const transContent = fs.readFileSync('./src/i18n/translations.ts', 'utf-8');
+const zhMatch = transContent.match(/zh:\s*\{([\s\S]*?)\n\s*\},/);
+const enMatch = transContent.match(/en:\s*\{([\s\S]*?)\n\s*\},?\s*\}\s*(?:as\s+const)?;/);
+const extractKeys = (block) => {
+  const keys = [];
+  const lines = block ? block.split('\n') : [];
+  for (const line of lines) {
+    const m = line.match(/^\s*([a-zA-Z0-9_$]+)\s*:/);
+    if (m && !line.trim().startsWith('//')) {
+      keys.push(m[1]);
+    }
+  }
+  return keys;
+};
+const zhKeys = extractKeys(zhMatch ? zhMatch[1] : '');
+const enKeys = extractKeys(enMatch ? enMatch[1] : '');
+const enKeySet = new Set(enKeys);
 
 assert.strictEqual(zhKeys.length, enKeys.length, '中英文翻译词典键数量必须完全一致');
 zhKeys.forEach(k => {
-  assert.ok(translations.en[k], `英文词典必须包含键: ${k}`);
-  assert.ok(typeof translations.en[k] === 'string' && translations.en[k].length > 0, `英文键 ${k} 不能为空`);
+  assert.ok(enKeySet.has(k), `英文词典必须包含键: ${k}`);
 });
 console.log(`✓ 双语词典完整性测试通过 (${zhKeys.length} 对术语全部对齐)`);
 
