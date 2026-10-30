@@ -381,6 +381,157 @@ class SoundManager {
   }
 
   /**
+   * Meditative Handpan / Hang Drum harmonic tone (D-Kurd therapeutic scale)
+   * Warm metallic strike transient + resonant octave & fifth body ring
+   */
+  playHandpanTone(noteIndex?: number) {
+    try {
+      this.initCtx();
+      if (!this.ctx) return;
+      const now = this.ctx.currentTime;
+
+      // D-Kurd / Celtic Minor contemplative scale (D3, A3, Bb3, C4, D4, E4, F4, A4)
+      const notes = [146.83, 220.0, 233.08, 261.63, 293.66, 329.63, 349.23, 440.0];
+      const idx = typeof noteIndex === 'number' ? Math.abs(noteIndex) % notes.length : Math.floor(Math.random() * notes.length);
+      const freq = notes[idx];
+
+      // 1. Fundamental resonant tone
+      const osc1 = this.ctx.createOscillator();
+      const gain1 = this.ctx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(freq, now);
+      gain1.gain.setValueAtTime(0.0001, now);
+      gain1.gain.exponentialRampToValueAtTime(0.24, now + 0.008);
+      gain1.gain.exponentialRampToValueAtTime(0.0001, now + 1.8);
+
+      // 2. Octave overtone (Hang drum acoustic characteristic)
+      const osc2 = this.ctx.createOscillator();
+      const gain2 = this.ctx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(freq * 2, now);
+      gain2.gain.setValueAtTime(0.0001, now);
+      gain2.gain.exponentialRampToValueAtTime(0.12, now + 0.006);
+      gain2.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
+
+      // 3. Soft metallic transient slap (bandpassed triangle)
+      const slapOsc = this.ctx.createOscillator();
+      const slapGain = this.ctx.createGain();
+      slapOsc.type = 'triangle';
+      slapOsc.frequency.setValueAtTime(freq * 3, now);
+      slapOsc.frequency.exponentialRampToValueAtTime(freq * 1.5, now + 0.02);
+      slapGain.gain.setValueAtTime(0.10, now);
+      slapGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.025);
+
+      osc1.connect(gain1);
+      gain1.connect(this.ctx.destination);
+      osc2.connect(gain2);
+      gain2.connect(this.ctx.destination);
+      slapOsc.connect(slapGain);
+      slapGain.connect(this.ctx.destination);
+
+      osc1.start(now);
+      osc1.stop(now + 1.85);
+      osc2.start(now);
+      osc2.stop(now + 1.25);
+      slapOsc.start(now);
+      slapOsc.stop(now + 0.03);
+    } catch {
+      // Audio error handling
+    }
+  }
+
+  /**
+   * Tibetan Singing Bowl resonance with slow acoustic chorus beating
+   */
+  playSingingBowlResonance(noteIndex?: number) {
+    try {
+      this.initCtx();
+      if (!this.ctx) return;
+      const now = this.ctx.currentTime;
+
+      // Meditative singing bowl frequencies
+      const bowlBases = [216.0, 256.0, 288.0, 324.0, 384.0, 432.0];
+      const idx = typeof noteIndex === 'number' ? Math.abs(noteIndex) % bowlBases.length : Math.floor(Math.random() * bowlBases.length);
+      const baseFreq = bowlBases[idx];
+
+      const harmonics = [
+        { f: baseFreq, g: 0.22, d: 2.8 },
+        { f: baseFreq + 0.75, g: 0.16, d: 2.6 }, // Micro-detuned beating
+        { f: baseFreq * 2.02, g: 0.08, d: 2.0 },
+        { f: baseFreq * 3.01, g: 0.03, d: 1.4 },
+      ];
+
+      harmonics.forEach(({ f, g, d }) => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, now);
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(g, now + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + d);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + d + 0.05);
+      });
+    } catch {
+      // Audio error handling
+    }
+  }
+
+  /**
+   * Cosmic Supernova explosive burst with ethereal low-frequency sweep
+   */
+  playSupernovaBurst() {
+    try {
+      this.initCtx();
+      if (!this.ctx) return;
+      const now = this.ctx.currentTime;
+
+      // 1. Low sub bass expansion boom (95Hz -> 32Hz)
+      const subOsc = this.ctx.createOscillator();
+      const subGain = this.ctx.createGain();
+      subOsc.type = 'sine';
+      subOsc.frequency.setValueAtTime(95, now);
+      subOsc.frequency.exponentialRampToValueAtTime(32, now + 0.85);
+      subGain.gain.setValueAtTime(0.38, now);
+      subGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.9);
+      subOsc.connect(subGain);
+      subGain.connect(this.ctx.destination);
+      subOsc.start(now);
+      subOsc.stop(now + 0.95);
+
+      // 2. Shimmering cosmic whoosh noise
+      const bufferSize = Math.floor(this.ctx.sampleRate * 0.75);
+      const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.35));
+      }
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = noiseBuffer;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1200, now);
+      filter.frequency.exponentialRampToValueAtTime(300, now + 0.7);
+      filter.Q.setValueAtTime(1.8, now);
+
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.22, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.75);
+
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(this.ctx.destination);
+      noise.start(now);
+    } catch {
+      // Audio error handling
+    }
+  }
+
+  /**
    * Subtle wooden tap for tactile UI feedback
    */
   playTap() {

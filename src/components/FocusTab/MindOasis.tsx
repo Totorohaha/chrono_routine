@@ -1,16 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
-  Sparkles, 
   Wind, 
-  RotateCcw, 
-  Play, 
-  Pause, 
   CloudRain, 
   Waves, 
-  VolumeX, 
-  Flame, 
-  Check, 
-  ChevronDown
+  VolumeX
 } from 'lucide-react';
 import { soundManager } from '../../services/audio';
 import { HapticsService } from '../../services/haptics';
@@ -19,6 +12,7 @@ import { useToast } from '../UI/Toast';
 import { LuckyMuyuGame } from './LuckyMuyuGame';
 import { CyberSmokeLuxury } from './CyberSmokeLuxury';
 import { CyberBuskingGame } from './CyberBuskingGame';
+import { GravityStarsGame } from './GravityStarsGame';
 
 type OasisMode = 'muyu' | 'smoke' | 'gravity' | 'busking' | 'cat' | 'dog';
 
@@ -29,144 +23,11 @@ export const MindOasis: React.FC = () => {
   const [ambientSound, setAmbientSound] = useState<'rain' | 'waves' | 'stream' | 'none'>('none');
 
   // ==========================================
-  // 1. 转运木鱼 3D (Lucky Muyu 3D) is now fully encapsulated in <LuckyMuyuGame />
-  // ==========================================
-
-  // ==========================================
-  // 2. 赛博小烟 (Cyber Smoke Luxury Edition) is now fully encapsulated in <CyberSmokeLuxury />
-  // ==========================================
-
-  // ==========================================
-  // 3. 引力星辰 (Gravity Stars)
-  // ==========================================
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const animationFrameRef = useRef<number | null>(null);
-  const particlesRef = useRef<Array<{ x: number; y: number; vx: number; vy: number; radius: number; color: string; alpha: number }>>([]);
-  const mouseRef = useRef<{ x: number; y: number; isDown: boolean }>({ x: -1000, y: -1000, isDown: false });
-
-  const initStardust = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const width = (canvas.width = canvas.offsetWidth || 340);
-    const height = (canvas.height = canvas.offsetHeight || 450);
-
-    const colors = ['#38bdf8', '#34d399', '#a78bfa', '#f472b6', '#f59e0b', '#2dd4bf', '#60a5fa'];
-    const particles = [];
-    for (let i = 0; i < 180; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 1.2,
-        vy: (Math.random() - 0.5) * 1.2,
-        radius: 1.5 + Math.random() * 2.5,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        alpha: 0.35 + Math.random() * 0.55,
-      });
-    }
-    particlesRef.current = particles;
-  };
-
-  useEffect(() => {
-    if (activeMode !== 'gravity') return;
-    initStardust();
-
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let chimeThrottle = 0;
-    let pulseAngle = 0;
-
-    const animate = () => {
-      const width = canvas.width;
-      const height = canvas.height;
-
-      // Soft trail fade effect
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.22)';
-      ctx.fillRect(0, 0, width, height);
-
-      const mx = mouseRef.current.x;
-      const my = mouseRef.current.y;
-      const isDown = mouseRef.current.isDown;
-
-      // Draw subtle orbital ripple at gravity source
-      if (isDown) {
-        pulseAngle = (pulseAngle + 0.05) % (Math.PI * 2);
-        const pulseR = 36 + Math.sin(pulseAngle) * 8;
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(mx, my, pulseR, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(167, 139, 250, 0.35)';
-        ctx.lineWidth = 1.5;
-        ctx.setLineDash([4, 6]);
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(mx, my, 6, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-        ctx.shadowBlur = 12;
-        ctx.shadowColor = '#a78bfa';
-        ctx.fill();
-        ctx.restore();
-      }
-
-      particlesRef.current.forEach((p) => {
-        // Gravitational attraction to finger/cursor
-        if (isDown) {
-          const dx = mx - p.x;
-          const dy = my - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 260 && dist > 10) {
-            const force = 38 / dist;
-            p.vx += (dx / dist) * force * 0.14;
-            p.vy += (dy / dist) * force * 0.14;
-          }
-        }
-
-        p.vx *= 0.985;
-        p.vy *= 0.985;
-        p.x += p.vx;
-        p.y += p.vy;
-
-        // Bounce on boundary
-        if (p.x < 0) { p.x = 0; p.vx *= -1; }
-        if (p.x > width) { p.x = width; p.vx *= -1; }
-        if (p.y < 0) { p.y = 0; p.vy *= -1; }
-        if (p.y > height) { p.y = height; p.vy *= -1; }
-
-        // Render glowing stardust
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = p.alpha;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = p.color;
-        ctx.fill();
-        ctx.restore();
-      });
-
-      // Play soothing pentatonic chime occasionally on drag
-      if (isDown) {
-        chimeThrottle++;
-        if (chimeThrottle % 36 === 0) {
-          soundManager.playPentatonicChime();
-        }
-      }
-
-      animationFrameRef.current = requestAnimationFrame(animate);
-    };
-
-    animationFrameRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
-    };
-  }, [activeMode]);
-
-  // ==========================================
+  // 1. 转运木鱼 3D (Lucky Muyu 3D) is encapsulated in <LuckyMuyuGame />
+  // 2. 赛博小烟 (Cyber Smoke Luxury Edition) is encapsulated in <CyberSmokeLuxury />
+  // 3. 引力星辰 (Gravity Stars) is encapsulated in <GravityStarsGame />
   // 4. 待开发游戏状态与交互: 云端撸猫 (Pet Cat)
+  // ==========================================
   // ==========================================
   const [catPets, setCatPets] = useState<number>(() => {
     const s = localStorage.getItem('pulseflow_cat_pets');
@@ -312,7 +173,7 @@ export const MindOasis: React.FC = () => {
       {/* ============================================================== */}
       {/* GAME 1: 赛博小烟 (Cyber Smoke Luxury Edition)                   */}
       {/* ============================================================== */}
-      {activeMode === 'smoke' && (
+      <div className={activeMode === 'smoke' ? 'block' : 'hidden'}>
         <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center relative overflow-hidden">
           <div className="w-full flex items-center justify-between mb-2 z-10">
             <span className="text-xs font-bold text-slate-700 dark:text-slate-200 font-mono">
@@ -322,7 +183,7 @@ export const MindOasis: React.FC = () => {
 
           <CyberSmokeLuxury />
         </div>
-      )}
+      </div>
 
       {/* ============================================================== */}
       {/* GAME 2: 街艺打赏 (Street Busking)                              */}
@@ -343,64 +204,7 @@ export const MindOasis: React.FC = () => {
       {/* GAME 3: 引力星辰 (Gravity Stars)                              */}
       {/* ============================================================== */}
       {activeMode === 'gravity' && (
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center relative overflow-hidden">
-          <div className="w-full flex items-center justify-between mb-2 z-10">
-            <span className="text-xs font-bold text-slate-700 dark:text-slate-200 font-mono">
-              {t('gravityTitle')}
-            </span>
-            <button
-              onClick={() => {
-                soundManager.playPentatonicChime();
-                initStardust();
-              }}
-              title={t('clearCanvas')}
-              className="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-700 dark:text-slate-300 transition"
-            >
-              <RotateCcw className="w-4 h-4" />
-            </button>
-          </div>
-
-          <div className="relative w-full h-[450px] sm:h-[480px] rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 cursor-crosshair select-none shadow-inner">
-            {/* Top cosmic badge */}
-            <div className="absolute top-3 left-3 text-[10px] font-mono text-cyan-400/80 bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-cyan-500/30 flex items-center space-x-1.5 pointer-events-none z-10">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              <span>COSMIC ORBIT · 万有引力</span>
-            </div>
-
-            <canvas
-              ref={canvasRef}
-              className="w-full h-full"
-              onMouseDown={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top, isDown: true };
-              }}
-              onMouseMove={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                mouseRef.current.x = e.clientX - rect.left;
-                mouseRef.current.y = e.clientY - rect.top;
-              }}
-              onMouseUp={() => { mouseRef.current.isDown = false; }}
-              onMouseLeave={() => { mouseRef.current.isDown = false; }}
-              onTouchStart={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const t = e.touches[0];
-                mouseRef.current = { x: t.clientX - rect.left, y: t.clientY - rect.top, isDown: true };
-              }}
-              onTouchMove={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const t = e.touches[0];
-                mouseRef.current.x = t.clientX - rect.left;
-                mouseRef.current.y = t.clientY - rect.top;
-              }}
-              onTouchEnd={() => { mouseRef.current.isDown = false; }}
-            />
-
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 text-[11px] font-mono text-slate-300/80 bg-slate-900/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-700/60 pointer-events-none flex items-center space-x-1.5 shadow-lg whitespace-nowrap z-10">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-              <span>{language === 'zh' ? '在画布上按住并滑动，聚拢发光星系漩涡' : 'Hold and drag on canvas to weave galactic vortex'}</span>
-            </div>
-          </div>
-        </div>
+        <GravityStarsGame />
       )}
 
       {/* ============================================================== */}

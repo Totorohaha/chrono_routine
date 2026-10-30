@@ -1035,6 +1035,43 @@ function roundRectPath(ctx: CanvasRenderingContext2D, x: number, y: number, w: n
   ctx.closePath();
 }
 
+// Storage keys for persistent smoke session
+const SMOKE_STORAGE = {
+  PACK: 'pulseflow_cyber_smoke_pack',
+  LIGHTER: 'pulseflow_cyber_smoke_lighter',
+  TINT: 'pulseflow_cyber_smoke_tint',
+};
+
+const getPersistedPackIndex = (): number => {
+  try {
+    const saved = localStorage.getItem(SMOKE_STORAGE.PACK);
+    if (saved !== null) {
+      const idx = parseInt(saved, 10);
+      if (!isNaN(idx) && idx >= 0 && idx < PACK_STYLES.length) return idx;
+    }
+  } catch (e) {}
+  const initial = Math.floor(Math.random() * PACK_STYLES.length);
+  try {
+    localStorage.setItem(SMOKE_STORAGE.PACK, String(initial));
+  } catch (e) {}
+  return initial;
+};
+
+const getPersistedLighterIndex = (): number => {
+  try {
+    const saved = localStorage.getItem(SMOKE_STORAGE.LIGHTER);
+    if (saved !== null) {
+      const idx = parseInt(saved, 10);
+      if (!isNaN(idx) && idx >= 0 && idx < LIGHTER_STYLES.length) return idx;
+    }
+  } catch (e) {}
+  const initial = Math.floor(Math.random() * LIGHTER_STYLES.length);
+  try {
+    localStorage.setItem(SMOKE_STORAGE.LIGHTER, String(initial));
+  } catch (e) {}
+  return initial;
+};
+
 export const CyberSmokeLuxury: React.FC = () => {
   const { language, t } = useLanguage();
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -1043,10 +1080,14 @@ export const CyberSmokeLuxury: React.FC = () => {
   // Sound engine instance
   const soundEngineRef = useRef<CyberSoundEngine | null>(null);
 
+  // Persisted loadout indices (initialized once from localStorage)
+  const [initialPack] = useState<number>(getPersistedPackIndex);
+  const [initialLighter] = useState<number>(getPersistedLighterIndex);
+
   // Synchronized state for UI controls
   const [currentStage, setCurrentStage] = useState<StateKey>(STATES.IDLE);
-  const [packIndex, setPackIndex] = useState<number>(0);
-  const [lighterIndex, setLighterIndex] = useState<number>(0);
+  const [packIndex, setPackIndex] = useState<number>(initialPack);
+  const [lighterIndex, setLighterIndex] = useState<number>(initialLighter);
   const [puffsRemaining, setPuffsRemaining] = useState<number>(MAX_PUFFS);
   const [capsulesCrushed, setCapsulesCrushed] = useState<number>(0);
   const [ashLength, setAshLength] = useState<number>(0);
@@ -1057,8 +1098,8 @@ export const CyberSmokeLuxury: React.FC = () => {
   // Animation & simulation mutable state ref
   const simStateRef = useRef({
     current: STATES.IDLE as StateKey,
-    packIndex: 0,
-    lighterIndex: 0,
+    packIndex: initialPack,
+    lighterIndex: initialLighter,
     animTime: 0,
     globalTime: 0,
     puffsRemaining: MAX_PUFFS,
@@ -1154,6 +1195,16 @@ export const CyberSmokeLuxury: React.FC = () => {
     }
   }, [language]);
 
+  // Restore persisted lighter tint if available
+  useEffect(() => {
+    try {
+      const savedTint = localStorage.getItem(SMOKE_STORAGE.TINT);
+      if (savedTint) {
+        LIGHTER_STYLES[0].bodyTint = savedTint;
+      }
+    } catch (e) {}
+  }, []);
+
   const randomizeLoadout = useCallback((avoidSame = true) => {
     let nextPack = Math.floor(Math.random() * PACK_STYLES.length);
     let nextLighter = Math.floor(Math.random() * LIGHTER_STYLES.length);
@@ -1164,11 +1215,19 @@ export const CyberSmokeLuxury: React.FC = () => {
       nextLighter = (nextLighter + 1) % LIGHTER_STYLES.length;
     }
     const plasticColors = ['#059669', '#0284c7', '#db2777', '#7c3aed', '#d97706'];
-    LIGHTER_STYLES[0].bodyTint = plasticColors[Math.floor(Math.random() * plasticColors.length)];
+    const chosenTint = plasticColors[Math.floor(Math.random() * plasticColors.length)];
+    LIGHTER_STYLES[0].bodyTint = chosenTint;
 
     simStateRef.current.packIndex = nextPack;
     simStateRef.current.lighterIndex = nextLighter;
     simStateRef.current.capsulesCrushed = 0;
+
+    try {
+      localStorage.setItem(SMOKE_STORAGE.PACK, String(nextPack));
+      localStorage.setItem(SMOKE_STORAGE.LIGHTER, String(nextLighter));
+      localStorage.setItem(SMOKE_STORAGE.TINT, chosenTint);
+    } catch (e) {}
+
     syncUiFromState();
   }, [syncUiFromState]);
 
@@ -1360,11 +1419,13 @@ export const CyberSmokeLuxury: React.FC = () => {
       });
     }
 
-    randomizeLoadout(false);
+    // Do NOT randomize loadout here. Cigarette style must stay consistent throughout the session.
+    // Style will only randomize when the user clicks '再来一根' (New Stick) or starts a fresh stick after finishing.
 
     const resizeCanvas = () => {
       if (!containerRef.current || !canvasRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       viewSizeRef.current = { width: rect.width || 360, height: rect.height || 450 };
       canvasRef.current.width = Math.floor(viewSizeRef.current.width * dpr);
@@ -2859,7 +2920,7 @@ export const CyberSmokeLuxury: React.FC = () => {
       ro.disconnect();
       soundEngineRef.current?.stopAllLooping();
     };
-  }, [randomizeLoadout, syncUiFromState, language]);
+  }, [language]);
 
   // Handle pointer interactions on Canvas
   const handleCanvasPointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
