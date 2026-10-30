@@ -60,8 +60,11 @@ jobs:
         run: |
           cd android
           if ! ./gradlew :app:assembleDebug --stacktrace > /tmp/gradle.log 2>&1; then
-            cat /tmp/gradle.log | tail -n 30
-            ERR_MSG=$(tail -n 15 /tmp/gradle.log | tr '\n' ' ')
+            cat /tmp/gradle.log | tail -n 60
+            ERR_MSG=$(grep -A 6 "What went wrong:" /tmp/gradle.log | tr '\n' ' ')
+            if [ -z "$ERR_MSG" ]; then
+              ERR_MSG=$(grep -B 1 -A 4 "Caused by:" /tmp/gradle.log | tr '\n' ' ')
+            fi
             echo "::error::$ERR_MSG"
             exit 1
           fi
